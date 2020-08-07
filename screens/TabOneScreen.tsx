@@ -26,7 +26,7 @@ export default function TabOneScreen() {
           data={data}
           renderItem={({ item }) => (
             <Text>
-              Nome: {item.nomeproduto} | Descricao: {item.descricao} | Preço: R${" "}
+              Nome: {item.nomeproduto} | Descricao: {item.descricao} | Preço: R$
               {item.preco}
             </Text>
           )}

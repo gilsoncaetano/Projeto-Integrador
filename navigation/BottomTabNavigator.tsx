@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -11,8 +11,9 @@ import Perfil from "../screens/Perfil";
 import Carrinho from "../screens/Carrinho";
 import PedidosRealizados from "../screens/PedidosRealizados";
 
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import Login from "../screens/Login";
+import Cadastrar from "../screens/Cadastrar";
+
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -64,6 +65,24 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
+
+      <BottomTab.Screen
+        name="Login"
+        component={LoginNavegador}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-alarm" color={color} />
+          ),
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Cadastrar"
+        component={CadastrarNavegador}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon2 name="adn" color={color} />,
+        }}
+      />
     </BottomTab.Navigator>
   );
 }
@@ -72,6 +91,10 @@ export default function BottomTabNavigator() {
 // https://icons.expo.fyi/
 function TabBarIcon(props: { name: string; color: string }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+}
+
+function TabBarIcon2(props: { name: string; color: string }) {
+  return <FontAwesome5 size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -126,5 +149,31 @@ function PedidosRealizadosNavegador() {
         options={{ headerTitle: "Pedidos Realizados" }}
       />
     </PedidosRealizadosStack.Navigator>
+  );
+}
+
+const LoginStack = createStackNavigator();
+function LoginNavegador() {
+  return (
+    <LoginStack.Navigator>
+      <LoginStack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerTitle: "Login" }}
+      />
+    </LoginStack.Navigator>
+  );
+}
+
+const CadastrarStack = createStackNavigator();
+function CadastrarNavegador() {
+  return (
+    <CadastrarStack.Navigator>
+      <CadastrarStack.Screen
+        name="Cadastrar"
+        component={Cadastrar}
+        options={{ headerTitle: "Cadastrar" }}
+      />
+    </CadastrarStack.Navigator>
   );
 }

@@ -11,11 +11,42 @@ import {
   StyleSheet,
   Image,
   ImageBackground,
+  Alert,
 } from "react-native";
+
+let nome = "";
+let cpf = "";
+let sx = "";
+let us = "";
+let sh = "";
+let cf = "";
+let ft = "padrao.png";
+let em = "";
+let tel = "";
+let tp = "";
+let lg = "";
+let nu = "";
+let cp = "";
+let ba = "";
+let cep = "";
 
 export default function Cadastrar() {
   const [sexo, setSexo] = React.useState("");
   const [tipo, setTipo] = React.useState("");
+  const [nomecli, setNomecli] = React.useState("");
+  const [cpfcli, setCPFcli] = React.useState("");
+  const [usuario, setUsuario] = React.useState("");
+  const [senha, setSenha] = React.useState("");
+  const [confirmar, setConfirmar] = React.useState("");
+  const [foto, setFoto] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [telefone, setTelefone] = React.useState("");
+  const [logradouro, setLogradouro] = React.useState("");
+  const [numero, setNumero] = React.useState("");
+  const [complemento, setComplemento] = React.useState("");
+  const [bairro, setBairro] = React.useState("");
+  const [cepcli, setCEPcli] = React.useState("");
+
   return (
     <View style={estilo.area}>
       <ImageBackground
@@ -31,8 +62,18 @@ export default function Cadastrar() {
           <View style={estilo.dados}>
             <Text style={estilo.titulo}>Dados Pessoais</Text>
 
-            <TextInput placeholder="Nome Completo" style={estilo.input} />
-            <TextInput placeholder="CPF" style={estilo.input} />
+            <TextInput
+              placeholder="Nome Completo"
+              style={estilo.input}
+              onChangeText={(value) => setNomecli(value)}
+              value={nomecli}
+            />
+            <TextInput
+              placeholder="CPF"
+              style={estilo.input}
+              onChangeText={(value) => setCPFcli(value)}
+              value={cpfcli}
+            />
             <Picker
               selectedValue={sexo}
               mode="dropdown"
@@ -46,16 +87,25 @@ export default function Cadastrar() {
 
           <View style={estilo.dados}>
             <Text style={estilo.titulo}>Acesso</Text>
-            <TextInput placeholder="Usuário" style={estilo.input} />
+            <TextInput
+              placeholder="Usuário"
+              style={estilo.input}
+              onChangeText={(value) => setUsuario(value)}
+              value={usuario}
+            />
             <TextInput
               secureTextEntry
               placeholder="Senha"
               style={estilo.input}
+              onChangeText={(value) => setSenha(value)}
+              value={senha}
             />
             <TextInput
               secureTextEntry
               placeholder="Confirme"
               style={estilo.input}
+              onChangeText={(value) => setConfirmar(value)}
+              value={confirmar}
             />
           </View>
 
@@ -65,11 +115,15 @@ export default function Cadastrar() {
               placeholder="E-Mail"
               keyboardType="email-address"
               style={estilo.input}
+              onChangeText={(value) => setEmail(value)}
+              value={email}
             />
             <TextInput
               placeholder="Telefone"
               keyboardType="phone-pad"
               style={estilo.input}
+              onChangeText={(value) => setTelefone(value)}
+              value={telefone}
             />
           </View>
 
@@ -87,17 +141,46 @@ export default function Cadastrar() {
               <Picker.Item label="Al" value="Al" />
               <Picker.Item label="Praça" value="Praça" />
             </Picker>
-            <TextInput placeholder="Logradouro" style={estilo.input} />
-            <TextInput placeholder="Número" style={estilo.input} />
-            <TextInput placeholder="Complemento" style={estilo.input} />
-            <TextInput placeholder="Bairro" style={estilo.input} />
+            <TextInput
+              placeholder="Logradouro"
+              style={estilo.input}
+              onChangeText={(value) => setLogradouro(value)}
+              value={logradouro}
+            />
+            <TextInput
+              placeholder="Número"
+              style={estilo.input}
+              onChangeText={(value) => setNumero(value)}
+              value={numero}
+            />
+            <TextInput
+              placeholder="Complemento"
+              style={estilo.input}
+              onChangeText={(value) => setComplemento(value)}
+              value={complemento}
+            />
+            <TextInput
+              placeholder="Bairro"
+              style={estilo.input}
+              onChangeText={(value) => setBairro(value)}
+              value={bairro}
+            />
             <TextInput
               placeholder="CEP"
               keyboardType="numeric"
               style={estilo.input}
+              onChangeText={(value) => setCEPcli(value)}
+              value={cepcli}
             />
           </View>
-          <TouchableOpacity style={estilo.cadastrar}>
+          <TouchableOpacity
+            style={estilo.cadastrar}
+            onPress={() => {
+              us = usuario;
+              sh = senha;
+              efetuarCadastro();
+            }}
+          >
             <Text style={estilo.txtCadastrar}> Cadastrar </Text>
           </TouchableOpacity>
         </ScrollView>
@@ -173,3 +256,24 @@ const estilo = StyleSheet.create({
     marginVertical: 20,
   },
 });
+
+function efetuarCadastro() {
+  fetch("http://192.168.0.3/projeto/service/usuario/cadastro.php", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      nomeusuario: us,
+      senha: sh,
+      foto: ft,
+    }),
+  })
+    .then((response) => response.json())
+    .then((resposta) => {
+      console.log(resposta);
+      Alert.alert("Olhe na tela de console");
+    })
+    .catch((error) => console.error(error));
+}

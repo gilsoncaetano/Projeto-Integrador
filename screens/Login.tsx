@@ -13,8 +13,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
+let us = "";
+let sh = "";
 
 export default function Login({ navigation }) {
+  const [usuario, setUsuario] = React.useState("");
+  const [senha, setSenha] = React.useState("");
+
   return (
     <View style={estilo.area}>
       <ImageBackground
@@ -26,10 +31,29 @@ export default function Login({ navigation }) {
           style={estilo.logo}
         />
 
-        <TextInput placeholder="Usuário" style={estilo.acesso} />
-        <TextInput secureTextEntry placeholder="Senha" style={estilo.acesso} />
+        <TextInput
+          placeholder="Usuário"
+          style={estilo.acesso}
+          onChangeText={(value) => setUsuario(value)}
+          value={usuario}
+        />
 
-        <TouchableOpacity style={estilo.logar} onPress={logar}>
+        <TextInput
+          secureTextEntry
+          placeholder="Senha"
+          style={estilo.acesso}
+          onChangeText={(value) => setSenha(value)}
+          value={senha}
+        />
+
+        <TouchableOpacity
+          style={estilo.logar}
+          onPress={() => {
+            us = usuario;
+            sh = senha;
+            logar();
+          }}
+        >
           <Text style={estilo.txtLogar}> Logar </Text>
         </TouchableOpacity>
 
@@ -132,8 +156,8 @@ function logar() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      nomeusuario: "wagner.araujo",
-      senha: "123",
+      nomeusuario: us,
+      senha: sh,
     }),
   })
     .then((response) => response.json())

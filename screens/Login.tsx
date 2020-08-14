@@ -1,28 +1,53 @@
 import * as React from "react";
 import { Text, View } from "../components/Themed";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { Button, StyleSheet, Image } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Image,
+  Alert,
+  ImageBackground,
+} from "react-native";
+import Cadastrar from "../screens/Cadastrar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-export default function Login() {
+const Stack = createStackNavigator();
+
+export default function Login({ navigation }) {
   return (
     <View style={estilo.area}>
-      <Image
-        source={require("../assets/images/logo.png")}
-        style={estilo.logo}
-      />
+      <ImageBackground
+        source={require("../assets/images/fundo.jpg")}
+        style={estilo.fundo}
+      >
+        <Image
+          source={require("../assets/images/logo.png")}
+          style={estilo.logo}
+        />
 
-      <TextInput placeholder="Usuário" style={estilo.acesso} />
-      <TextInput secureTextEntry placeholder="Senha" style={estilo.acesso} />
+        <TextInput placeholder="Usuário" style={estilo.acesso} />
+        <TextInput secureTextEntry placeholder="Senha" style={estilo.acesso} />
 
-      <TouchableOpacity style={estilo.logar}>
-        <Text style={estilo.txtLogar}> Logar </Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={estilo.logar} onPress={logar}>
+          <Text style={estilo.txtLogar}> Logar </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={estilo.cadastrar}>
-        <Text style={estilo.txtCadastrar}> Cadastrar </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={estilo.cadastrar}
+          onPress={() => navigation.navigate("Cadastrar")}
+        >
+          <Text style={estilo.txtCadastrar}> Cadastrar </Text>
+        </TouchableOpacity>
+      </ImageBackground>
     </View>
   );
+
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Cadastrar" component={Cadastrar} />
+    </Stack.Navigator>
+  </NavigationContainer>;
 }
 
 const estilo = StyleSheet.create({
@@ -91,4 +116,30 @@ const estilo = StyleSheet.create({
     marginBottom: 40,
     opacity: 0.2,
   },
+
+  fundo: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
 });
+
+function logar() {
+  fetch("http://192.168.0.3/projeto/service/usuario/login.php", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      nomeusuario: "wagner.araujo",
+      senha: "123",
+    }),
+  })
+    .then((response) => response.json())
+    .then((resposta) => {
+      console.log(resposta);
+      Alert.alert("Olhe na tela de console");
+    })
+    .catch((error) => console.error(error));
+}

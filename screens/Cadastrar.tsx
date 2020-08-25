@@ -258,7 +258,7 @@ const estilo = StyleSheet.create({
 });
 
 function efetuarCadastro() {
-  fetch("http://192.168.0.3/projeto/service/usuario/cadastro.php", {
+  fetch("http://192.168.0.8/projeto/service/usuario/cadastro.php", {
     method: "POST",
     headers: {
       Accept: "application/json",

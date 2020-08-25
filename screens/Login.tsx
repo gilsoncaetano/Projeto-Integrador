@@ -149,7 +149,7 @@ const estilo = StyleSheet.create({
 });
 
 function logar() {
-  fetch("http://192.168.0.3/projeto/service/usuario/login.php", {
+  fetch("http://192.168.0.8/projeto/service/usuario/login.php", {
     method: "POST",
     headers: {
       Accept: "application/json",

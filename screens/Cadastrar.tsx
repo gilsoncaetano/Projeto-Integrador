@@ -178,6 +178,19 @@ export default function Cadastrar() {
             onPress={() => {
               us = usuario;
               sh = senha;
+              nome = nomecli;
+              cpf = cpfcli;
+              sx = sexo;
+              ft = "padrao.png";
+              em = email;
+              tel = telefone;
+              tp = tipo;
+              lg = logradouro;
+              nu = numero;
+              cp = complemento;
+              ba = bairro;
+              cep = cepcli;
+
               efetuarCadastro();
             }}
           >
@@ -258,13 +271,24 @@ const estilo = StyleSheet.create({
 });
 
 function efetuarCadastro() {
-  fetch("http://192.168.0.8/projeto/service/usuario/cadastro.php", {
+  fetch("http://192.168.0.8/projeto/service/cadastro/cadastro.php", {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      nomecliente: nome,
+      cpf: cpf,
+      sexo: sx,
+      telefone: tel,
+      email: em,
+      tipo: tp,
+      logradouro: lg,
+      numero: nu,
+      complemento: cp,
+      bairro: ba,
+      cep: cep,
       nomeusuario: us,
       senha: sh,
       foto: ft,

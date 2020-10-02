@@ -14,6 +14,8 @@ import PedidosRealizados from "../screens/PedidosRealizados";
 import Login from "../screens/Login";
 import Cadastrar from "../screens/Cadastrar";
 
+import Pagamento from "../screens/Pagamento";
+
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -79,6 +81,14 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="Cadastrar"
         component={CadastrarNavegador}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon2 name="adn" color={color} />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Pagamento"
+        component={PagamentoNavegador}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon2 name="adn" color={color} />,
         }}
@@ -175,5 +185,18 @@ function CadastrarNavegador() {
         options={{ headerTitle: "Cadastrar" }}
       />
     </CadastrarStack.Navigator>
+  );
+}
+
+const PagamentoStack = createStackNavigator();
+function PagamentoNavegador() {
+  return (
+    <PagamentoStack.Navigator>
+      <PagamentoStack.Screen
+        name="Pagamento"
+        component={Pagamento}
+        options={{ headerTitle: "Pagamento" }}
+      />
+    </PagamentoStack.Navigator>
   );
 }

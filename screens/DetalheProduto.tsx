@@ -53,7 +53,12 @@ export default function DetalheProduto({ route }) {
 
               <TouchableOpacity
                 onPress={() => {
-                  adicionarAoCarrinho(`${idproduto}`);
+                  adicionarAoCarrinho(
+                    `${idproduto}`,
+                    `${item.nomeproduto}`,
+                    `${item.preco}`,
+                    `${item.foto1}`
+                  );
                 }}
                 style={tela.link}
               >
@@ -81,16 +86,18 @@ const tela = StyleSheet.create({
 
 const db = SQLite.openDatabase("appvendadb.banco");
 
-function adicionarAoCarrinho(id) {
-  alert("chamou " + id);
+function adicionarAoCarrinho(id, nome, preco, foto) {
   db.transaction((tx) => {
     tx.executeSql(
-      "create table if not exists itens(id integer primary key,idproduto int);"
+      "create table if not exists itens(id integer primary key,idproduto int,nomeproduto text, preco text, foto text);"
     );
   });
 
   db.transaction((tx) => {
-    tx.executeSql("insert into itens(idproduto)values(?)", [id]);
+    tx.executeSql(
+      "insert into itens(idproduto,nomeproduto,preco,foto)values(?,?,?,?)",
+      [id, nome, preco, foto]
+    );
     tx.executeSql("select * from itens", [], (_, { rows }) => {
       console.log(JSON.stringify(rows));
     });

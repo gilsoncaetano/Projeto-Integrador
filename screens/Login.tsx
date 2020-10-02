@@ -12,6 +12,10 @@ import Cadastrar from "../screens/Cadastrar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import * as SQLite from "expo-sqlite";
+
+const db = SQLite.openDatabase("appvendadb.banco");
+
 const Stack = createStackNavigator();
 let us = "";
 let sh = "";
@@ -162,8 +166,43 @@ function logar() {
   })
     .then((response) => response.json())
     .then((resposta) => {
-      console.log(resposta);
+      gravarPerfil(resposta.saida[0]);
       Alert.alert("Olhe na tela de console");
     })
     .catch((error) => console.error(error));
+}
+
+function gravarPerfil(dados) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "create table if not exists perfil(id integer primary key, idusuario int , nomeusuario text, foto text,idcliente text, nomecliente text, cpf text,sexo text, email text, telefone text, tipo text, logardouro text, numero text, complemento text, bairro text, cep text, logado int);"
+    );
+  });
+  db.transaction((tx) => {
+    tx.executeSql(
+      "insert into perfil(idusuario, nomeusuario, foto,idcliente, nomecliente, cpf,sexo, email, telefone, tipo, logardouro, numero, complemento, bairro, cep, logado)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      [
+        dados.idusuario,
+        dados.nomeusuario,
+        dados.foto,
+        dados.idcliente,
+        dados.nomecliente,
+        dados.cpf,
+        dados.sexo,
+        dados.email,
+        dados.telefone,
+        dados.tipo,
+        dados.logradouro,
+        dados.numero,
+        dados.complemento,
+        dados.bairro,
+        dados.cep,
+        1,
+      ]
+    );
+
+    tx.executeSql("select * from perfil", [], (_, { rows }) => {
+      console.log(rows);
+    });
+  });
 }

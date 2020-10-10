@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Text, View } from "../components/Themed";
 
-export default function PoliticaTermos() {
+export default function PoliticaTermo() {
   return (
     <View>
-      <Text>Estamos dentro de politica termos</Text>
+      <Text>Estamos dentro de Politica de termo</Text>
     </View>
   );
 }

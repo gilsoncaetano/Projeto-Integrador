@@ -4,13 +4,14 @@
     "slug": "appvenda",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logop.png",
+    "icon": "./assets/images/2rm.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/fundosplash.jpg",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "image": "./img/logoclube.png",
+
+      "resizeMode": "contain",
+      "backgroundColor": "#388e3c"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

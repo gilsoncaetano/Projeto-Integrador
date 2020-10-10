@@ -1,16 +1,18 @@
 import * as React from "react";
-import { StyleSheet, ActivityIndicator, FlatList } from "react-native";
+import { StyleSheet, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import { FlatList } from "react-native-gesture-handler";
 
 export default function TabOneScreen() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   //Carregar os dados da api usando a função fetch
+
   useEffect(() => {
-    fetch("http://192.168.0.3/projeto/service/produto/listar.php")
+    fetch("http://192.168.0.2:8080/projeto/service/produto/listar.php")
       .then((response) => response.json())
       .then((produto) => setData(produto.saida))
       .catch((error) => console.error(error))
@@ -27,7 +29,7 @@ export default function TabOneScreen() {
           renderItem={({ item }) => (
             <Text>
               Nome: {item.nomeproduto} | Descricao: {item.descricao} | Preço: R$
-              {item.preco}
+              {"  "} {item.preco}
             </Text>
           )}
           keyExtractor={({ idproduto }, index) => idproduto}

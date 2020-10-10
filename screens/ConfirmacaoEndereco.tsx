@@ -4,7 +4,7 @@ import { Text, View } from "../components/Themed";
 export default function ConfirmacaoEndereco() {
   return (
     <View>
-      <Text>Estamos dentro de confirmação de endereço</Text>
+      <Text>Estamos dentro de Confirmação de Endereço</Text>
     </View>
   );
 }

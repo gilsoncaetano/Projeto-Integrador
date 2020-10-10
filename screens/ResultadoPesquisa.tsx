@@ -4,7 +4,7 @@ import { Text, View } from "../components/Themed";
 export default function ResultadoPesquisa() {
   return (
     <View>
-      <Text>Estamos dentro de resultado pesquisa</Text>
+      <Text>Estamos dentro de Resuatado pesquisa</Text>
     </View>
   );
 }

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Text, View } from "../components/Themed";
 
-export default function PedidosRealizados() {
+export default function PedidoRealizados() {
   return (
     <View>
-      <Text>Estamos dentro de pedidos realizados</Text>
+      <Text>Estamos dentro de pedido realizado</Text>
     </View>
   );
 }

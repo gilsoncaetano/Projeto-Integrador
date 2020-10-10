@@ -1,4 +1,4 @@
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -10,13 +10,16 @@ import Inicial from "../screens/Inicial";
 import Perfil from "../screens/Perfil";
 import Carrinho from "../screens/Carrinho";
 import PedidosRealizados from "../screens/PedidosRealizados";
-
 import Login from "../screens/Login";
 import Cadastrar from "../screens/Cadastrar";
+import Usuario from "../screens/Usuario";
+import Endereco from "../screens/Endereco";
 
-import Pagamento from "../screens/Pagamento";
-
+import TabOneScreen from "../screens/TabOneScreen";
+import TabTwoScreen from "../screens/TabTwoScreen";
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
+
+import { createDrawerNavigator } from "react-navigation-drawer";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -30,7 +33,7 @@ export default function BottomTabNavigator() {
     >
       <BottomTab.Screen
         name="Inicial"
-        component={InicialNavegador}
+        component={InicialNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="md-home" color={color} />
@@ -39,8 +42,18 @@ export default function BottomTabNavigator() {
       />
 
       <BottomTab.Screen
+        name="Perfil"
+        component={PerfilNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="md-person" color={color} />
+          ),
+        }}
+      />
+
+      <BottomTab.Screen
         name="Carrinho"
-        component={CarrinhoNavegador}
+        component={CarrinhoNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-cart" color={color} />
@@ -50,17 +63,17 @@ export default function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="PedidosRealizados"
-        component={PedidosRealizadosNavegador}
+        component={PedidosRealizadosNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-list" color={color} />
+            <TabBarIcon3 name="opencart" color={color} />
           ),
         }}
       />
 
       <BottomTab.Screen
-        name="Perfil"
-        component={PerfilNavegador}
+        name="Login"
+        component={LoginNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-contact" color={color} />
@@ -69,28 +82,32 @@ export default function BottomTabNavigator() {
       />
 
       <BottomTab.Screen
-        name="Login"
-        component={LoginNavegador}
+        name="Cadastrar"
+        component={CadastrarNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-alarm" color={color} />
+            <TabBarIcon2 name="id-card" color={color} />
           ),
         }}
       />
 
       <BottomTab.Screen
-        name="Cadastrar"
-        component={CadastrarNavegador}
+        name="Usuario"
+        component={UsuarioNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon2 name="adn" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon2 name="user-tag" color={color} />
+          ),
         }}
       />
 
       <BottomTab.Screen
-        name="Pagamento"
-        component={PagamentoNavegador}
+        name="Endereco"
+        component={EnderecoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon2 name="adn" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon2 name="map-signs" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -102,16 +119,17 @@ export default function BottomTabNavigator() {
 function TabBarIcon(props: { name: string; color: string }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
-
 function TabBarIcon2(props: { name: string; color: string }) {
   return <FontAwesome5 size={30} style={{ marginBottom: -3 }} {...props} />;
+}
+function TabBarIcon3(props: { name: string; color: string }) {
+  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-
 const InicialStack = createStackNavigator();
-function InicialNavegador() {
+function InicialNavigator() {
   return (
     <InicialStack.Navigator>
       <InicialStack.Screen
@@ -124,7 +142,7 @@ function InicialNavegador() {
 }
 
 const PerfilStack = createStackNavigator();
-function PerfilNavegador() {
+function PerfilNavigator() {
   return (
     <PerfilStack.Navigator>
       <PerfilStack.Screen
@@ -137,7 +155,7 @@ function PerfilNavegador() {
 }
 
 const CarrinhoStack = createStackNavigator();
-function CarrinhoNavegador() {
+function CarrinhoNavigator() {
   return (
     <CarrinhoStack.Navigator>
       <CarrinhoStack.Screen
@@ -150,7 +168,7 @@ function CarrinhoNavegador() {
 }
 
 const PedidosRealizadosStack = createStackNavigator();
-function PedidosRealizadosNavegador() {
+function PedidosRealizadosNavigator() {
   return (
     <PedidosRealizadosStack.Navigator>
       <PedidosRealizadosStack.Screen
@@ -163,7 +181,7 @@ function PedidosRealizadosNavegador() {
 }
 
 const LoginStack = createStackNavigator();
-function LoginNavegador() {
+function LoginNavigator() {
   return (
     <LoginStack.Navigator>
       <LoginStack.Screen
@@ -176,7 +194,7 @@ function LoginNavegador() {
 }
 
 const CadastrarStack = createStackNavigator();
-function CadastrarNavegador() {
+function CadastrarNavigator() {
   return (
     <CadastrarStack.Navigator>
       <CadastrarStack.Screen
@@ -187,16 +205,28 @@ function CadastrarNavegador() {
     </CadastrarStack.Navigator>
   );
 }
-
-const PagamentoStack = createStackNavigator();
-function PagamentoNavegador() {
+const UsuarioStack = createStackNavigator();
+function UsuarioNavigator() {
   return (
-    <PagamentoStack.Navigator>
-      <PagamentoStack.Screen
-        name="Pagamento"
-        component={Pagamento}
-        options={{ headerTitle: "Pagamento" }}
+    <UsuarioStack.Navigator>
+      <UsuarioStack.Screen
+        name="Acesso"
+        component={Usuario}
+        options={{ headerTitle: "Acesso" }}
       />
-    </PagamentoStack.Navigator>
+    </UsuarioStack.Navigator>
+  );
+}
+
+const EnderecoStack = createStackNavigator();
+function EnderecoNavigator() {
+  return (
+    <EnderecoStack.Navigator>
+      <EnderecoStack.Screen
+        name="Endereço"
+        component={Endereco}
+        options={{ headerTitle: "Endereço" }}
+      />
+    </EnderecoStack.Navigator>
   );
 }

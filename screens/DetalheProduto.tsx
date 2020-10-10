@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Text, View } from "../components/Themed";
-import { ActivityIndicator, Image, StyleSheet } from "react-native";
+import { View, Text } from "../components/Themed";
+import { Image, StyleSheet, ActivityIndicator } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-
-import * as SQLite from "expo-sqlite";
+import NumberFormat from "react-number-format";
 
 export default function DetalheProduto({ route }) {
   const { idproduto } = route.params;
@@ -12,12 +11,12 @@ export default function DetalheProduto({ route }) {
 
   React.useEffect(() => {
     fetch(
-      `http://192.168.0.8/projeto/service/produto/detalheproduto.php?idproduto=${idproduto}`
+      `http://192.168.0.2:8080/projeto/service/produto/detalheproduto.php?idproduto=${idproduto}`
     )
       .then((response) => response.json())
       .then((produto) => setDados(produto.saida))
       .catch((error) =>
-        console.error(`Erro ao tentar carregar o produto ${error}`)
+        console.error(`Erro ao tentar o carregar o produto ${error}`)
       )
       .finally(() => setCarregado(false));
   }, []);
@@ -30,39 +29,50 @@ export default function DetalheProduto({ route }) {
         <FlatList
           data={dados}
           renderItem={({ item }) => (
-            <View>
+            <View style={tela.conteiner}>
               <Image
-                source={{ uri: `http://192.168.0.8/projeto/img/${item.foto1}` }}
+                source={{
+                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto1}`,
+                }}
                 style={tela.img}
               />
               <Image
-                source={{ uri: `http://192.168.0.8/projeto/img/${item.foto2}` }}
+                source={{
+                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto2}`,
+                }}
                 style={tela.img}
               />
               <Image
-                source={{ uri: `http://192.168.0.8/projeto/img/${item.foto3}` }}
+                source={{
+                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto3}`,
+                }}
                 style={tela.img}
               />
               <Image
-                source={{ uri: `http://192.168.0.8/projeto/img/${item.foto4}` }}
+                source={{
+                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto4}`,
+                }}
                 style={tela.img}
               />
-              <Text>{item.nomeproduto}</Text>
-              <Text>{item.descricao}</Text>
-              <Text>{item.preco}</Text>
+              <Text style={tela.nome}>{item.nomeproduto}</Text>
+              <Text style={tela.txt}>{item.descricao}</Text>
 
+              <Text style={tela.preco}>
+                <NumberFormat
+                  value={item.preco}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"R$"}
+                  renderText={(valor) => <Text>{valor} </Text>}
+                />
+              </Text>
               <TouchableOpacity
                 onPress={() => {
-                  adicionarAoCarrinho(
-                    `${idproduto}`,
-                    `${item.nomeproduto}`,
-                    `${item.preco}`,
-                    `${item.foto1}`
-                  );
+                  adicionarAoCarrinho();
                 }}
                 style={tela.link}
               >
-                <Text> Adicionar ao Carrinho </Text>
+                <Text style={tela.carrinho}>Adiciona ao Carrinho</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -72,34 +82,56 @@ export default function DetalheProduto({ route }) {
     </View>
   );
 }
+
 const tela = StyleSheet.create({
   img: {
-    width: 200,
-    height: 180,
+    borderRadius: 10,
+
+    marginTop: 10,
+    width: "100%",
+    height: 250,
     flex: 1,
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   link: {
     padding: 10,
+    fontWeight: "bold",
+  },
+  conteiner: {
+    width: 130,
+    width: "95%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    backgroundColor: "#8bc34a",
+  },
+  nome: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    padding: 11,
+    fontSize: 19,
+    marginBottom: 2,
+  },
+  txt: {
+    color: "white",
+    textAlign: "center",
+    padding: 11,
+    fontSize: 19,
+  },
+  preco: {
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 17,
+    marginTop: 20,
+    marginBottom: 13,
+  },
+  carrinho: {
+    backgroundColor: "#ffea00",
+    padding: 10,
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 17,
+    marginBottom: 13,
   },
 });
-//Fazer a constante do banco de dados. Vamos chamarde db
-
-const db = SQLite.openDatabase("appvendadb.banco");
-
-function adicionarAoCarrinho(id, nome, preco, foto) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "create table if not exists itens(id integer primary key,idproduto int,nomeproduto text, preco text, foto text);"
-    );
-  });
-
-  db.transaction((tx) => {
-    tx.executeSql(
-      "insert into itens(idproduto,nomeproduto,preco,foto)values(?,?,?,?)",
-      [id, nome, preco, foto]
-    );
-    tx.executeSql("select * from itens", [], (_, { rows }) => {
-      console.log(JSON.stringify(rows));
-    });
-  });
-}

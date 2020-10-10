@@ -4,7 +4,7 @@ import { Text, View } from "../components/Themed";
 export default function ConfirmacaoPagamento() {
   return (
     <View>
-      <Text>Estamos dentro de confirmação de pagamento</Text>
+      <Text>Estamos dentro de Confirmação de pagamento</Text>
     </View>
   );
 }

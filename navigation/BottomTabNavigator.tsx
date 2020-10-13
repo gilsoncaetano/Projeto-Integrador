@@ -14,6 +14,7 @@ import Login from "../screens/Login";
 import Cadastrar from "../screens/Cadastrar";
 import Usuario from "../screens/Usuario";
 import Endereco from "../screens/Endereco";
+import CadastroUsu from "../screens/CadastroUsu";
 
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
@@ -57,6 +58,15 @@ export default function BottomTabNavigator() {
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-cart" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="CadastroUsu"
+        component={CadastroUsuNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="md-person" color={color} />
           ),
         }}
       />
@@ -164,6 +174,19 @@ function CarrinhoNavigator() {
         options={{ headerTitle: "Carrinho" }}
       />
     </CarrinhoStack.Navigator>
+  );
+}
+
+const CadastroUsuStack = createStackNavigator();
+function CadastroUsuNavigator() {
+  return (
+    <CadastroUsuStack.Navigator>
+      <CadastroUsuStack.Screen
+        name="Cadastro Usuarios"
+        component={CadastroUsu}
+        options={{ headerTitle: "Cadastro Usuarios" }}
+      />
+    </CadastroUsuStack.Navigator>
   );
 }
 

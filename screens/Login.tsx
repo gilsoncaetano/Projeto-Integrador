@@ -1,18 +1,23 @@
 import * as React from "react";
 import { Text, View } from "../components/Themed";
-import { TextInput, ScrollView } from "react-native-gesture-handler";
+import {
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import {
   Button,
   StyleSheet,
   Image,
   ImageBackground,
-  unstable_enableLogBox,
   Alert,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import Usuario from "../screens/Usuario";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as SQLite from "expo-sqlite";
+
+const db = SQLite.openDatabase("appisadb.banco");
 
 const Stack = createStackNavigator();
 let us = "";
@@ -148,6 +153,8 @@ const estilo = StyleSheet.create({
 });
 
 function logar() {
+  // const [perfil, setPerfil] = React.useState([]);
+
   fetch("http://192.168.0.2:8080/projeto/service/usuario/login.php", {
     method: "POST",
     headers: {
@@ -161,8 +168,43 @@ function logar() {
   })
     .then((response) => response.json())
     .then((resposta) => {
-      console.log(resposta);
+      // setPerfil(resposta.saida);
+      gravarPerfil(resposta.saida[0]);
+      //console.log(resposta);
       Alert.alert("Olhe na tela de console");
     })
     .catch((error) => console.error(error));
+}
+function gravarPerfil(dados) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "create table if not exists perfil(id integer primary key, idusuario int, nomeusuario text, foto text, idcliente text, nomecliente text, cpf text, sexo text, email text, telefone text, tipo text, logradouro text, numero text, complemento text, bairro text, cep text, logado int);"
+    );
+  });
+  db.transaction((tx) => {
+    tx.executeSql(
+      "insert into perfil (idusuario , nomeusuario , foto , idcliente , nomecliente , cpf , sexo, email, telefone , tipo , logradouro, numero, complemento, bairro, cep, logado)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      [
+        dados.idusuario,
+        dados.nomeusuario,
+        dados.foto,
+        dados.idcliente,
+        dados.nomecliente,
+        dados.cpf,
+        dados.sexo,
+        dados.email,
+        dados.telefone,
+        dados.tipo,
+        dados.logradouro,
+        dados.numero,
+        dados.complemento,
+        dados.bairro,
+        dados.cep,
+        1,
+      ]
+    );
+    tx.executeSql("select *from perfil", [], (_, { rows }) => {
+      console.log(rows);
+    });
+  });
 }

@@ -3,6 +3,7 @@ import { View, Text } from "../components/Themed";
 import { Image, StyleSheet, ActivityIndicator } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import NumberFormat from "react-number-format";
+import * as SQLite from "expo-sqlite";
 
 export default function DetalheProduto({ route }) {
   const { idproduto } = route.params;
@@ -68,7 +69,12 @@ export default function DetalheProduto({ route }) {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  adicionarAoCarrinho();
+                  adicionarAoCarrinho(
+                    `${idproduto}`,
+                    `${item.nomeproduto}`,
+                    `${item.preco}`,
+                    `${item.foto1}`
+                  );
                 }}
                 style={tela.link}
               >
@@ -135,3 +141,27 @@ const tela = StyleSheet.create({
     marginBottom: 13,
   },
 });
+//Fazer a constante do banco de dados. Vamos chamar de db
+
+const db = SQLite.openDatabase("appisadb.banco");
+
+function adicionarAoCarrinho(id, nome, preco, foto) {
+  alert("Chamou" + id);
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "create table if not exists itens(idp integer primary key,idproduto int,nomeproduto text,preco text, foto text);"
+    );
+  });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "insert into itens(idproduto,nomeproduto,preco,foto)values(?,?,?,?)",
+      [id, nome, preco, foto]
+    );
+    tx.executeSql("select * from itens", [], (_, { rows }) => {
+      console.log(JSON.stringify(rows));
+    });
+    tx.executeSql("drop table perfil");
+  });
+}

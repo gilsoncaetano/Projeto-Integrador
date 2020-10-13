@@ -116,7 +116,7 @@ const tela = StyleSheet.create({
     borderRadius: 10,
     //padding: 10,
     marginBottom: 5,
-    width: 140,
+    width: 190,
     height: 140,
     marginLeft: "auto",
     marginRight: "auto",

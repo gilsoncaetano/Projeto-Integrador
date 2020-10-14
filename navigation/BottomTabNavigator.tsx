@@ -15,6 +15,7 @@ import Cadastrar from "../screens/Cadastrar";
 import Usuario from "../screens/Usuario";
 import Endereco from "../screens/Endereco";
 import CadastroUsu from "../screens/CadastroUsu";
+import Pagamento from "../screens/Pagamento";
 
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
@@ -120,6 +121,17 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
+
+      <BottomTab.Screen
+        name="Pagamento"
+        component={PagamentoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon3 name="opencart" color={color} />
+          ),
+        }}
+      />
+
     </BottomTab.Navigator>
   );
 }
@@ -251,5 +263,18 @@ function EnderecoNavigator() {
         options={{ headerTitle: "Endereço" }}
       />
     </EnderecoStack.Navigator>
+  );
+}
+
+const PagamentoStack = createStackNavigator();
+function PagamentoNavigator() {
+  return (
+    <PagamentoStack.Navigator>
+      <PagamentoStack.Screen
+        name="Pagamento"
+        component={Pagamento}
+        options={{ headerTitle: "Pagamento de Produtos" }}
+      />
+    </PagamentoStack.Navigator>
   );
 }

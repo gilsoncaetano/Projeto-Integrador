@@ -25,7 +25,7 @@ export default function Perfil() {
 
         {perfil.map(
           ({
-            id,
+            idcliente,
             idusuario,
             nomeusuario,
             foto,
@@ -47,6 +47,7 @@ export default function Perfil() {
                 source={{ uri: `http://192.168.0.2:8080/projeto/img/${foto}` }}
                 style={tela.img}
               />
+              <Text>Idcliente:{idcliente}</Text>
               <Text>Usuário:{nomeusuario}</Text>
               <Text>Nome:{nomecliente}</Text>
               <Text>CPF:{cpf}</Text>

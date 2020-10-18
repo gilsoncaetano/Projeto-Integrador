@@ -16,6 +16,8 @@ import Usuario from "../screens/Usuario";
 import Endereco from "../screens/Endereco";
 import CadastroUsu from "../screens/CadastroUsu";
 import Pagamento from "../screens/Pagamento";
+import ConfirmacaoPag from "../screens/ConfirmacaoPag";
+
 
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
@@ -131,6 +133,16 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
+ <BottomTab.Screen
+        name="ConfirmacaoPag"
+        component={ConfirmacaoPagNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon3 name="opencart" color={color} />
+          ),
+        }}
+      />
+
 
     </BottomTab.Navigator>
   );
@@ -276,5 +288,18 @@ function PagamentoNavigator() {
         options={{ headerTitle: "Pagamento de Produtos" }}
       />
     </PagamentoStack.Navigator>
+  );
+}
+
+const ConfirmacaoPagStack = createStackNavigator();
+function ConfirmacaoPagNavigator() {
+  return (
+    <ConfirmacaoPagStack.Navigator>
+      <ConfirmacaoPagStack.Screen
+        name="Confirmação De Pagamento"
+        component={ConfirmacaoPag}
+        options={{ headerTitle: "Confirmação De Pagamento" }}
+      />
+    </ConfirmacaoPagStack.Navigator>
   );
 }

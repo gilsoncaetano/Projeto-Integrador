@@ -4,8 +4,13 @@ import { Image, StyleSheet, ActivityIndicator } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import NumberFormat from "react-number-format";
 import * as SQLite from "expo-sqlite";
+import { createStackNavigator } from "@react-navigation/stack";
+import Carrinho from "./Carrinho";
+import { NavigationContainer } from "@react-navigation/native";
 
-export default function DetalheProduto({ route }) {
+const Stack = createStackNavigator();
+export default function DetalheProduto({ route,navigation }) {
+  
   const { idproduto } = route.params;
   const [carregado, setCarregado] = React.useState(true);
   const [dados, setDados] = React.useState([]);
@@ -68,8 +73,9 @@ export default function DetalheProduto({ route }) {
                 />
               </Text>
               <TouchableOpacity
-                onPress={() => {
-                  adicionarAoCarrinho(
+                onPress={() => { 
+                  //navigation.navigate("Carrinho")
+                  adicionarAoCarrinho( 
                     `${idproduto}`,
                     `${item.nomeproduto}`,
                     `${item.preco}`,
@@ -80,6 +86,12 @@ export default function DetalheProduto({ route }) {
               >
                 <Text style={tela.carrinho}>Adiciona ao Carrinho</Text>
               </TouchableOpacity>
+              <TouchableOpacity onPress={()=>{
+               navigation.navigate("Carrinho")
+               }} style={tela.link}>
+          
+          <Text style={tela.carrinho}>Ir para o Carrinho</Text>
+        </TouchableOpacity>
             </View>
           )}
           keyExtractor={({ idproduto }, index) => idproduto}
@@ -87,6 +99,11 @@ export default function DetalheProduto({ route }) {
       )}
     </View>
   );
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Carrinho" component={Carrinho} />
+    </Stack.Navigator>
+  </NavigationContainer>;
 }
 
 const tela = StyleSheet.create({
@@ -145,8 +162,8 @@ const tela = StyleSheet.create({
 
 const db = SQLite.openDatabase("appisadb.banco");
 
-function adicionarAoCarrinho(id, nome, preco, foto) {
-  alert("Chamou" + id);
+function adicionarAoCarrinho(idcliente, nome, preco, foto) {
+  alert("Produto Foi Encaminhado Para O Carrinho");
 
   db.transaction((tx) => {
     tx.executeSql(
@@ -157,11 +174,11 @@ function adicionarAoCarrinho(id, nome, preco, foto) {
   db.transaction((tx) => {
     tx.executeSql(
       "insert into itens(idproduto,nomeproduto,preco,foto)values(?,?,?,?)",
-      [id, nome, preco, foto]
+      [idcliente, nome, preco, foto]
     );
     tx.executeSql("select * from itens", [], (_, { rows }) => {
       console.log(JSON.stringify(rows));
     });
-    tx.executeSql("drop table perfil");
+    //tx.executeSql("drop table perfil");
   });
 }

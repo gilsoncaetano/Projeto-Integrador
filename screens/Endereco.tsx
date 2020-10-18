@@ -14,6 +14,8 @@ import Cadastrar from "../screens/Cadastrar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
+
+
 const Stack = createStackNavigator();
 let ft = "";
 let nome = "";

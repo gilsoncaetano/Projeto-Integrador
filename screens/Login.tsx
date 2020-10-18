@@ -57,7 +57,7 @@ export default function Login({ navigation }) {
           <Button title="" />
           <Text
             style={estilo.txtlogar}
-            onPress={() => {
+            onPress={() => { 
               us = usuario;
               sh = senha;
               logar();

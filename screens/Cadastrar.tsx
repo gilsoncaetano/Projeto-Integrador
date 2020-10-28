@@ -20,73 +20,43 @@ import {
 import Login from "../screens/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
-import Endereco from "./Endereco";
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("appisadb.banco");
 
 const Stack = createStackNavigator();
 let nomecl = "";
 let cpf = "";
-let email = "";
 let tel = "";
 let sx = "";
-let us = "";
-let sh = "";
+let email = "";
 let ft = "";
-let fsh = "";
-let cep = "";
-let lograd = "";
-let numer = "";
-let compl = "";
-let bair = "";
-let tip = "";
+let sh = "";
+let fsh = ""
 
 export default function Cadastrar() {
   return (
     <Stack.Navigator initialRouteName="Cadastra">
       <Stack.Screen name="Cadastra" component={Cadastra} />
-      <Stack.Screen name="Endereco" component={Endereco} />
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   );
 }
 
 function Cadastra({ route, navigation }) {
-  // const { usr } = route.params;
-  // const { sha } = route.params;
-  // const { fto } = route.params;
-  // React.useEffect(() => {
-  //   us = usr;
-  //   sh = sha;
-  //   ft = fto;
-  // }, []);
 
   const [carregado, setCarregado] = React.useState(true);
   const [dados, setDados] = React.useState([]);
-
-  const [sexo, setSexo] = React.useState("");
-  const [telefone, setTelefone] = React.useState("");
   const [nomecli, setNomecli] = React.useState("");
   const [cpfcli, setCPFcli] = React.useState("");
+  const [sexo, setSexo] = React.useState("");
   const [emailcli, setEmailcli] = React.useState("");
-  // const [usuario, setUsuario] = React.useState("");
-  // const [senha, setSenha] = React.useState("");
-  // const [foto, setFoto] = React.useState("");
-  // const [fsenha, setFsenha] = React.useState("");
-
-  const [usuario, setUsuario] = React.useState("");
+  const [telefone, setTelefone] = React.useState("");
+  const [foto, setFoto] = React.useState("");
   const [senha, setSenha] = React.useState("");
   const [fsenha, setFsenha] = React.useState("");
-  const [foto, setFoto] = React.useState("");
-  const [usemail, setUsemail] = React.useState("");
-
-  const [cepend, setCepend] = React.useState("");
-  const [tipoend, setTipoend] = React.useState("");
-  const [logradouroend, setLogradouroend] = React.useState("");
-  const [numeend, setNumeend] = React.useState("");
-  const [complementoend, setComplementoend] = React.useState("");
-  const [bairroend, setBairroend] = React.useState("");
-
-  React.useEffect(() => {
-    fetch("http://192.168.0.2:8080/projeto/service/cadastro/cadastro.php")
+ 
+   React.useEffect(() => {
+    fetch("http://192.168.0.2:8080/projetoisaclube/service/cliente/cadastrar.php")
       .then((response) => response.json())
       .then((login) => setDados(login.saida))
       .catch((error) => console.error(error))
@@ -110,6 +80,7 @@ function Cadastra({ route, navigation }) {
           />
           <TextInput
             placeholder="CPF"
+            keyboardType="phone-pad"
             style={estilo.cadastro}
             onChangeText={(value) => setCPFcli(value)}
             value={cpfcli}
@@ -118,6 +89,9 @@ function Cadastra({ route, navigation }) {
             placeholder="E-Mail"
             keyboardType="email-address"
             style={estilo.cadastro}
+            placeholderTextColor="#999"
+            autoCapitalize="words"
+            autoCorrect={false}
             onChangeText={(value) => setEmailcli(value)}
             value={emailcli}
           />
@@ -128,89 +102,69 @@ function Cadastra({ route, navigation }) {
             onChangeText={(value) => setTelefone(value)}
             value={telefone}
           />
+          <TextInput
+            placeholder="Foto De Perfil"
+            style={estilo.cadastro}
+            onChangeText={(value) => setFoto(value)}
+            value={foto}
+          />
+
+          <TextInput
+            secureTextEntry
+            placeholder="Senha"
+            style={estilo.cadastro}
+            onChangeText={(value) => setSenha(value)}
+            value={senha}
+          />
+          <TextInput
+          style={estilo.cadastro}
+            secureTextEntry
+            placeholder="Confirme"
+            placeholderTextColor="#999"
+            autoCapitalize="words"
+            autoCorrect={false}
+            onChangeText={(value) => setFsenha(value)}
+            value={fsenha}
+          />
           <Picker
             selectedValue={sexo}
             mode="dialog"
             onValueChange={setSexo}
-            style={estilo.sexo}
+            style={estilo.input}
           >
             <Picker.Item label="Masculino" value="Masculino" />
             <Picker.Item label="Feminino" value="Feminino" />
           </Picker>
 
+          <View style={estilo.cadastrar}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Endereco", {
-                usuario: { us },
-                senha: { sh },
-                foto: { ft },
-                nomecli: { nomecli },
-                cpfcli: { cpfcli },
-                emailcli: { emailcli },
-                telefone: { telefone },
-                sexo: { sexo },
+                nomecl= nomecli;
+                cpf=cpfcli;
+                sx=sexo;
+                email=emailcli;
+                tel=telefone;
+                ft=foto;
+                sh=senha;
+                fsh=fsenha;
+                navigation.navigate("Login", {
               });
+              efetuarCadastro();
             }}
           >
             <Text style={estilo.botao}> Cadastrar </Text>
           </TouchableOpacity>
+          </View>
 
-          {/* <View style={estilo.botao}>
-            <Button title="" />
-            <Text
-              style={estilo.txtlogar}
-              onPress={() => {
-                us = usuario;
-                cpf = cpfcli;
-                sh = senha;
-                fsh = fsenha;
-                ft = foto;
-                sx = sexo;
-                tel = telefone;
-                email = emailcli;
-                nomecl = nomecli;
-                lograd = logradouroend;
-                numer = numeend;
-                compl = complementoend;
-                bair = bairroend;
-                cep = cepend;
-
-                efetuarCadastro();
-              }}
-              //onPress={() => navigation.navigate("Cadastrar")}
-            >
-              SALVAR{" "}
-            </Text>
-          </View> */}
-
-          {/* <View style={estilo.botao}>
-            <Button title="" />
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("", {
-                  nomecli: { nomecli },
-                  cpfcli: { cpf },
-                  emailcli: { emailcli },
-                  telefon: { telefone },
-                  sexo: { sexo },
-                  usuario: { usuario },
-                  senha: { senha },
-                  foto: { foto },
-                });
-              }}
-            >
-              <Text style={estilo.botao}> Proximo </Text>
-            </TouchableOpacity>
-          </View> */}
         </ScrollView>
       </ImageBackground>
     </View>
   );
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-    </Stack.Navigator>
-  </NavigationContainer>;
+  // <NavigationContainer>
+  //   <Stack.Navigator>
+  //     <Stack.Screen name="Login" component={Login} />
+  //   </Stack.Navigator>
+  // </NavigationContainer>;
 }
 
 const estilo = StyleSheet.create({
@@ -224,6 +178,7 @@ const estilo = StyleSheet.create({
     flex: 1,
     alignContent: "center",
     justifyContent: "center",
+    
   },
   dados: {
     color: "white",
@@ -241,105 +196,87 @@ const estilo = StyleSheet.create({
   cadastro: {
     backgroundColor: "white",
     borderRadius: 5,
-    padding: 18,
+    padding: 13,
     width: "85%",
     margin: 8,
     marginLeft: "auto",
     marginRight: "auto",
-    //shadowColor: "gray",
-    shadowOpacity: 1,
-  },
-
-  usuario: {
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 14,
-    width: "85%",
-    margin: 14,
-    marginLeft: "auto",
-    marginRight: "auto",
-    shadowColor: "gray",
-    shadowOpacity: 1,
-  },
-  txtlogar: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 18,
-    marginTop: -20,
-    marginBottom: 13,
   },
   botao: {
     fontWeight: "bold",
-    fontSize: 18,
-    padding: 11,
+    fontSize: 16,
+    marginTop: 10,
     textAlign: "center",
+    backgroundColor: "#f9a825",
+    color: "white",
+  },
+  input: {
+    marginTop:8,
+    backgroundColor: "white",
+    width: "85%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  cadastrar: {
+    height: 40,
+    marginTop:50,
+    borderRadius: 4,
     backgroundColor: "#f9a825",
     width: "85%",
     marginLeft: "auto",
     marginRight: "auto",
-    color: "white",
-  },
-  sexo: {
-    color: "white",
-    marginBottom: -50,
-    marginTop: -50,
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "85%",
-  },
+  }
 });
 
-// function efetuarCadastro() {
-//   Alert.alert(
-//     "Nome: " +
-//       nomecl +
-//       "\nCPF: " +
-//       cpf +
-//       "\nEmail: " +
-//       email +
-//       "\nTel: " +
-//       tel +
-//       "\nSexo: " +
-//       sx +
-//       "\nUsuario: " +
-//       us +
-//       "\nSenha: " +
-//       sh +
-//       "\nFsh: " +
-//       fsh +
-//       "\nFoto: " +
-//       ft +
-//       "\nEmail: " +
-//       email
-//   );
 
 function efetuarCadastro() {
-  fetch("http://192.168.0.2:8080/projeto/service/cadastro/cadastro.php", {
+  fetch("http://192.168.0.2:8080/projetoisaclube/service/cliente/cadastrar.php", {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      // nomeusuario: us,
-      // senha: sh,
-      // foto: ft,
-
+     
       nomecliente: nomecl,
       cpf: cpf,
       sexo: sx,
       email: email,
       telefone: tel,
-      nomeusuario: us,
       senha: sh,
       foto: ft,
     }),
   })
     .then((response) => response.json())
     .then((resposta) => {
+     // gravarCadastro(resposta.saida[0]);
       console.log(resposta);
-      Alert.alert("Olhe na tela de console");
+      Alert.alert("Cadastro com sucesso");
     })
     .catch((error) => console.error(error));
+}
+function gravarCadastro(dados) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "create table if not exists cadastro(id integer primary key, idcliente int, nomecliente text, foto text, cpf text, sexo text, email text, telefone text, logado int);"
+    );
+  })
+  db.transaction((tx) => {
+    tx.executeSql(
+      "insert into cadastro (idcliente, nomecliente, foto, cpf, sexo, email, telefone, logado)values(?,?,?,?,?,?,?,?)",
+      [
+        dados.idcliente,
+        dados.nomecliente,
+        dados.foto,                    
+        dados.cpf,        
+        dados.sexo,         
+        dados.email,         
+        dados.telefone,
+        1,
+      ]
+    );
+    tx.executeSql("select * from cadastro", [], (_, { rows }) => {
+      console.log(rows);
+    });
+  });
 }

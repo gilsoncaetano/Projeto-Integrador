@@ -1,27 +1,32 @@
 {
   "expo": {
-    "name": "appvenda",
-    "slug": "appvenda",
+    "name": "Loja isa e Clube",
+    "slug": "isaclube",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/2rm.png",
+    "icon": "./assets/images/gclogoisa.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./img/logoclube.png",
-
       "resizeMode": "contain",
       "backgroundColor": "#388e3c"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ios.clubeisa"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "android": {
+      "package": "com.projeto.clubeisa"
     }
   }
 }

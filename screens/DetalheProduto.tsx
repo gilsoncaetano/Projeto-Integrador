@@ -17,7 +17,7 @@ export default function DetalheProduto({ route,navigation }) {
 
   React.useEffect(() => {
     fetch(
-      `http://192.168.0.2:8080/projeto/service/produto/detalheproduto.php?idproduto=${idproduto}`
+      `http://192.168.0.2:8080/projetoisaclube/service/produto/detalheproduto.php?idproduto=${idproduto}`
     )
       .then((response) => response.json())
       .then((produto) => setDados(produto.saida))
@@ -28,7 +28,7 @@ export default function DetalheProduto({ route,navigation }) {
   }, []);
 
   return (
-    <View>
+    <View style={tela.conteiner}>
       {carregado ? (
         <ActivityIndicator />
       ) : (
@@ -38,25 +38,25 @@ export default function DetalheProduto({ route,navigation }) {
             <View style={tela.conteiner}>
               <Image
                 source={{
-                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto1}`,
+                  uri: `http://192.168.0.2:8080/projetoisaclube/img/${item.foto1}`,
                 }}
                 style={tela.img}
               />
               <Image
                 source={{
-                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto2}`,
+                  uri: `http://192.168.0.2:8080/projetoisaclube/img/${item.foto2}`,
                 }}
                 style={tela.img}
               />
               <Image
                 source={{
-                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto3}`,
+                  uri: `http://192.168.0.2:8080/projetoisaclube/img/${item.foto3}`,
                 }}
                 style={tela.img}
               />
               <Image
                 source={{
-                  uri: `http://192.168.0.2:8080/projeto/img/${item.foto4}`,
+                  uri: `http://192.168.0.2:8080/projetoisaclube/img/${item.foto4}`,
                 }}
                 style={tela.img}
               />
@@ -72,6 +72,8 @@ export default function DetalheProduto({ route,navigation }) {
                   renderText={(valor) => <Text>{valor} </Text>}
                 />
               </Text>
+
+              <View style={tela.inputView}>
               <TouchableOpacity
                 onPress={() => { 
                   //navigation.navigate("Carrinho")
@@ -81,17 +83,19 @@ export default function DetalheProduto({ route,navigation }) {
                     `${item.preco}`,
                     `${item.foto1}`
                   );
-                }}
-                style={tela.link}
-              >
-                <Text style={tela.carrinho}>Adiciona ao Carrinho</Text>
+                }}>
+                <Text style={tela.inputdeth}>Adiciona ao Carrinho</Text>
               </TouchableOpacity>
+              </View>
+
+              <View style={tela.inputView}>
               <TouchableOpacity onPress={()=>{
                navigation.navigate("Carrinho")
-               }} style={tela.link}>
+               }}>
           
-          <Text style={tela.carrinho}>Ir para o Carrinho</Text>
+          <Text style={tela.inputdeth}>Ir para o Carrinho</Text>
         </TouchableOpacity>
+        </View>
             </View>
           )}
           keyExtractor={({ idproduto }, index) => idproduto}
@@ -109,21 +113,32 @@ export default function DetalheProduto({ route,navigation }) {
 const tela = StyleSheet.create({
   img: {
     borderRadius: 10,
-
     marginTop: 10,
-    width: "100%",
+    width: "90%",
     height: 250,
-    flex: 1,
     marginLeft: "auto",
     marginRight: "auto",
   },
-  link: {
-    padding: 10,
+  inputdeth: {
     fontWeight: "bold",
+    fontSize: 16,
+    textAlign: "center",
   },
+    inputView: {
+    padding: 10,
+    height: 40,
+    borderRadius: 6,
+    marginTop: 30,
+    backgroundColor: "#ffea00",
+    width: "85%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+
   conteiner: {
-    width: 130,
-    width: "95%",
+    flex: 1,
+    width: "100%",
+    marginBottom: 3,
     marginLeft: "auto",
     marginRight: "auto",
     backgroundColor: "#8bc34a",
@@ -146,17 +161,9 @@ const tela = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 17,
-    marginTop: 20,
-    marginBottom: 13,
+    marginBottom: -3,
   },
-  carrinho: {
-    backgroundColor: "#ffea00",
-    padding: 10,
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 17,
-    marginBottom: 13,
-  },
+
 });
 //Fazer a constante do banco de dados. Vamos chamar de db
 
@@ -179,6 +186,6 @@ function adicionarAoCarrinho(idcliente, nome, preco, foto) {
     tx.executeSql("select * from itens", [], (_, { rows }) => {
       console.log(JSON.stringify(rows));
     });
-    //tx.executeSql("drop table perfil");
+    tx.executeSql("drop table perfil");
   });
 }

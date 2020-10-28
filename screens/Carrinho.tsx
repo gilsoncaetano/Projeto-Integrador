@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Text, View } from "../components/Themed";
-import { TextInput, ScrollView, RefreshControl } from "react-native";
+import { TextInput, ScrollView, RefreshControl, } from "react-native";
 import { Picker, Button, StyleSheet, Image } from "react-native";
-
+import Confend from "./Confend";
 import * as SQLite from "expo-sqlite";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const db = SQLite.openDatabase("appisadb.banco");
+const Stack = createStackNavigator();
 const StackPagamento = createStackNavigator();
 
 //constante para nos ajudar a pausar a tela enquanto o indicator realizar a animação
@@ -18,7 +19,15 @@ const wait = (timeout)=>{
   });
 };
 
-export default function Carrinho({navigation}) {
+export default function Carrinho() {
+  return (
+    <Stack.Navigator initialRouteName="CarrinhoLoja">
+      <Stack.Screen name="CarrinhoLoja" component={CarrinhoLoja} />
+      <Stack.Screen name="Confend" component={Confend} />
+    </Stack.Navigator>
+  );
+}
+function CarrinhoLoja({navigation}){
   const [dados, setDados] = React.useState([]);
   const [quantidade, setQuantidade] = React.useState("1");
 
@@ -48,8 +57,7 @@ export default function Carrinho({navigation}) {
   
   return (
     <View style={tela.conteiner}>
-      <ScrollView 
-      refreshControl={
+      <ScrollView refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
       }>
         <Text> Veja o que tem no carrinho</Text>
@@ -57,7 +65,7 @@ export default function Carrinho({navigation}) {
         {dados.map(({ idp, idproduto, nomeproduto, preco, foto }) => (
           <View style={tela.conteiner} key={idproduto}>
             <Image
-              source={{ uri: `http://192.168.0.2:8080/projeto/img/${foto}` }}
+              source={{ uri: `http://192.168.0.2:8080/projetoisaclube/img/${foto}` }}
               style={tela.img}
             />
             <Text>Produto:{nomeproduto}</Text>
@@ -68,35 +76,35 @@ export default function Carrinho({navigation}) {
               value={quantidade}
               onChangeText={(value) => setQuantidade(value)}
             />
+            <View style={tela.inputView}>
             <TouchableOpacity
               onPress={() => {
                 db.transaction((tx) => {
                   tx.executeSql("delete from itens where idp=?", [idp]);
                 });
               alert("Toque na tela e arraster para baixo para atualizar o carrinho")
-              }}
-            >
-              <Text style={tela.botao1}>Tira do Carrinho</Text>
+              }}>
+              <Text style={tela.inputcar}>Retira do Carrinho</Text>
             </TouchableOpacity>
+            </View>
+            
           </View>
         ))}
+        <View style={tela.inputView}>
         <TouchableOpacity onPress={()=>{
-          navigation.navigate("Pagamento")
-        }} style={tela.link}>
+          navigation.navigate("Confend")
+        }}>
           
-          <Text style={tela.carrinho}>Ir para pagamento</Text>
+          <Text style={tela.inputcar}>Ir para pagamento</Text>
         </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
 }
 
 const tela = StyleSheet.create({
-  bloco2: {
-    // flexDirection: "row",
-    // backgroundColor: "#e0e0e0",
-  },
-  img: {
+   img: {
     borderRadius: 10,
     //padding: 10,
     margin: 5,
@@ -105,37 +113,29 @@ const tela = StyleSheet.create({
     height: 140,
     marginLeft: "auto",
     marginRight: "auto",
-    //flex: 1,
   },
   conteiner: {
     flex: 1,
-    //width: 160,
-    width: "95%",
+    width: "100%",
     marginBottom: 3,
     marginLeft: "auto",
     marginRight: "auto",
     backgroundColor: "#8bc34a",
   },
-  link: {
-    padding: 10,
+  inputcar: {
     fontWeight: "bold",
-  },
-  carrinho: {
-    backgroundColor: "#ffea00",
-    padding: 10,
-    fontWeight: "bold",
+    fontSize: 16,
     textAlign: "center",
-    fontSize: 17,
-    marginBottom: 13,
   },
- 
-  botao1: {
+    inputView: {
+    padding: 10,
+    height: 40,
+    borderRadius: 6,
+    marginTop: 30,
     backgroundColor: "#ffea00",
-    padding: 5,
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 17,
-    marginBottom: 13,
+    width: "85%",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 });
 

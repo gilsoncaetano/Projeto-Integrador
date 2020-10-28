@@ -34,7 +34,7 @@ function Produtos({ navigation }) {
 
   React.useEffect(() => {
     fetch(
-      "http://192.168.0.2:8080/projeto/service/produto/listartelainicial.php"
+      "http://192.168.0.2:8080/projetoisaclube/service/produto/listartelainicial.php"
     )
       .then((response) => response.json())
       .then((produtos) => setDados(produtos.saida))
@@ -58,7 +58,7 @@ function Produtos({ navigation }) {
               <View style={tela.conteiner}>
                 <Image
                   source={{
-                    uri: `http://192.168.0.2:8080/projeto/img/${item.foto}`,
+                    uri: `http://192.168.0.2:8080/projetoisaclube/img/${item.foto}`,
                   }}
                   style={tela.img}
                 />
@@ -75,6 +75,7 @@ function Produtos({ navigation }) {
                   </Text>
                   <Text style={tela.parcela}> 12x Sem juros </Text>
 
+                  <View style={tela.inputView}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("DetalheProduto", {
@@ -82,8 +83,9 @@ function Produtos({ navigation }) {
                       });
                     }}
                   >
-                    <Text style={tela.link}> Saiba mais </Text>
+                    <Text style={tela.inputtxt}> Saiba mais </Text>
                   </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             )}
@@ -135,14 +137,33 @@ const tela = StyleSheet.create({
     marginBottom: 16,
     //backgroundColor: "#ff5722",
   },
-  link: {
-    marginTop: -24,
-    top: 30,
-    paddingBottom: -10,
+  // link: {
+  //   marginTop: -24,
+  //   top: 30,
+  //   paddingBottom: -10,
+  //   textAlign: "center",
+  //   fontSize: 17,
+  //   backgroundColor: "#1b5e20",
+  //   color: "white",
+  // },
+
+  inputtxt: {
+    //fontWeight: "bold",
+    fontSize: 14,
+   // marginTop: 10,
     textAlign: "center",
-    fontSize: 17,
-    backgroundColor: "#1b5e20",
+    //backgroundColor: "#f9a825",
     color: "white",
+  },
+  inputView: {
+    padding:4,
+    height: 25,
+    borderRadius: 6,
+    marginTop:-1,
+    backgroundColor: "#1b5e20",
+    width: "70%",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 
   conteiner: {

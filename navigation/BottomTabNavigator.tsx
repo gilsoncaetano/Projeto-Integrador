@@ -12,9 +12,9 @@ import Carrinho from "../screens/Carrinho";
 import PedidosRealizados from "../screens/PedidosRealizados";
 import Login from "../screens/Login";
 import Cadastrar from "../screens/Cadastrar";
-import Usuario from "../screens/Usuario";
+import Perfilend from "../screens/Perfilend";
 import Endereco from "../screens/Endereco";
-import CadastroUsu from "../screens/CadastroUsu";
+import Confend from "../screens/Confend";
 import Pagamento from "../screens/Pagamento";
 import ConfirmacaoPag from "../screens/ConfirmacaoPag";
 
@@ -55,6 +55,16 @@ export default function BottomTabNavigator() {
         }}
       />
 
+{/* <BottomTab.Screen
+        name="Perfilend"
+        component={PerfilendNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="md-person" color={color} />
+          ),
+        }}
+      /> */}
+
       <BottomTab.Screen
         name="Carrinho"
         component={CarrinhoNavigator}
@@ -64,17 +74,9 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-      <BottomTab.Screen
-        name="CadastroUsu"
-        component={CadastroUsuNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="md-person" color={color} />
-          ),
-        }}
-      />
+     
 
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="PedidosRealizados"
         component={PedidosRealizadosNavigator}
         options={{
@@ -82,9 +84,9 @@ export default function BottomTabNavigator() {
             <TabBarIcon3 name="opencart" color={color} />
           ),
         }}
-      />
+      /> */}
 
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Login"
         component={LoginNavigator}
         options={{
@@ -92,9 +94,9 @@ export default function BottomTabNavigator() {
             <TabBarIcon name="ios-contact" color={color} />
           ),
         }}
-      />
+      /> */}
 
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Cadastrar"
         component={CadastrarNavigator}
         options={{
@@ -102,19 +104,11 @@ export default function BottomTabNavigator() {
             <TabBarIcon2 name="id-card" color={color} />
           ),
         }}
-      />
+      /> */}
 
-      <BottomTab.Screen
-        name="Usuario"
-        component={UsuarioNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon2 name="user-tag" color={color} />
-          ),
-        }}
-      />
+      
 
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Endereco"
         component={EnderecoNavigator}
         options={{
@@ -122,7 +116,17 @@ export default function BottomTabNavigator() {
             <TabBarIcon2 name="map-signs" color={color} />
           ),
         }}
-      />
+      /> */}
+
+      {/* <BottomTab.Screen
+        name="Confend"
+        component={ConfendNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon2 name="map-signs" color={color} />
+          ),
+        }}
+      /> */}
 
       <BottomTab.Screen
         name="Pagamento"
@@ -169,7 +173,7 @@ function InicialNavigator() {
       <InicialStack.Screen
         name="Inicial"
         component={Inicial}
-        options={{ headerTitle: "App Venda" }}
+        options={{ headerTitle: "Isa Clube de Tiro" }}
       />
     </InicialStack.Navigator>
   );
@@ -188,6 +192,19 @@ function PerfilNavigator() {
   );
 }
 
+const PerfilendStack = createStackNavigator();
+function PerfilendNavigator() {
+  return (
+    <PerfilendStack.Navigator>
+      <PerfilendStack.Screen
+        name="Perfilend"
+        component={Perfilend}
+        options={{ headerTitle: "Perfilend" }}
+      />
+    </PerfilendStack.Navigator>
+  );
+}
+
 const CarrinhoStack = createStackNavigator();
 function CarrinhoNavigator() {
   return (
@@ -201,44 +218,31 @@ function CarrinhoNavigator() {
   );
 }
 
-const CadastroUsuStack = createStackNavigator();
-function CadastroUsuNavigator() {
-  return (
-    <CadastroUsuStack.Navigator>
-      <CadastroUsuStack.Screen
-        name="Cadastro Usuarios"
-        component={CadastroUsu}
-        options={{ headerTitle: "Cadastro Usuarios" }}
-      />
-    </CadastroUsuStack.Navigator>
-  );
-}
+// const PedidosRealizadosStack = createStackNavigator();
+// function PedidosRealizadosNavigator() {
+//   return (
+//     <PedidosRealizadosStack.Navigator>
+//       <PedidosRealizadosStack.Screen
+//         name="PedidosRealizados"
+//         component={PedidosRealizados}
+//         options={{ headerTitle: "Pedidos Realizados" }}
+//       />
+//     </PedidosRealizadosStack.Navigator>
+//   );
+// }
 
-const PedidosRealizadosStack = createStackNavigator();
-function PedidosRealizadosNavigator() {
-  return (
-    <PedidosRealizadosStack.Navigator>
-      <PedidosRealizadosStack.Screen
-        name="PedidosRealizados"
-        component={PedidosRealizados}
-        options={{ headerTitle: "Pedidos Realizados" }}
-      />
-    </PedidosRealizadosStack.Navigator>
-  );
-}
-
-const LoginStack = createStackNavigator();
-function LoginNavigator() {
-  return (
-    <LoginStack.Navigator>
-      <LoginStack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerTitle: "Login" }}
-      />
-    </LoginStack.Navigator>
-  );
-}
+// const LoginStack = createStackNavigator();
+// function LoginNavigator() {
+//   return (
+//     <LoginStack.Navigator>
+//       <LoginStack.Screen
+//         name="Login"
+//         component={Login}
+//         options={{ headerTitle: "Login" }}
+//       />
+//     </LoginStack.Navigator>
+//   );
+// }
 
 const CadastrarStack = createStackNavigator();
 function CadastrarNavigator() {
@@ -252,18 +256,7 @@ function CadastrarNavigator() {
     </CadastrarStack.Navigator>
   );
 }
-const UsuarioStack = createStackNavigator();
-function UsuarioNavigator() {
-  return (
-    <UsuarioStack.Navigator>
-      <UsuarioStack.Screen
-        name="Acesso"
-        component={Usuario}
-        options={{ headerTitle: "Acesso" }}
-      />
-    </UsuarioStack.Navigator>
-  );
-}
+
 
 const EnderecoStack = createStackNavigator();
 function EnderecoNavigator() {
@@ -275,6 +268,19 @@ function EnderecoNavigator() {
         options={{ headerTitle: "Endereço" }}
       />
     </EnderecoStack.Navigator>
+  );
+}
+
+const ConfendStack = createStackNavigator();
+function ConfendNavigator() {
+  return (
+    <ConfendStack.Navigator>
+      <ConfendStack.Screen
+        name="Confirma Endereço"
+        component={Confend}
+        options={{ headerTitle: "Confirma Endereço" }}
+      />
+    </ConfendStack.Navigator>
   );
 }
 

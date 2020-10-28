@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, View } from "../components/Themed";
-import { TextInput, ScrollView } from "react-native-gesture-handler";
+import { TextInput, ScrollView,TouchableOpacity } from "react-native-gesture-handler";
 import {
   Picker,
   Button,
@@ -11,54 +11,50 @@ import {
   Alert,
 } from "react-native";
 import Cadastrar from "../screens/Cadastrar";
+import Login from "../screens/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as SQLite from "expo-sqlite";
 
-
-
+const db = SQLite.openDatabase("appisadb.banco");
+//const dbc = SQLite.openDatabase("appisadb.banco");
 const Stack = createStackNavigator();
-let ft = "";
-let nome = "";
-let cpf = "";
-let sx = "";
-let us = "";
-let sh = "";
-let fsh = "";
-let email = "";
-let tel = "";
-let cep = "";
+let tip = "";
 let lograd = "";
 let numer = "";
 let compl = "";
 let bair = "";
-let tip = "";
+let cep = "";
+let idcli = 0;
 
-export default function Endereco({ route }) {
-  // const { usuario } = route.params;
-  // const { senha } = route.params;
-  // const { foto } = route.params;
-  // const { nomecli } = route.params;
-  // const { cpfcli } = route.params;
-  // const { emailcli } = route.params;
-  // const { telefone } = route.params;
-  // const { sexo } = route.params;
-  // React.useEffect(() => {
-  //   us = usuario;
-  //   sh = senha;
-  //   ft = foto;
-  //   nome = nomecli;
-  //   cpf = cpfcli;
-  //   email = emailcli;
-  //   tel = telefone;
-  //   sx = sexo;
-  // }, []);
+export default function Endereco({ navigation }) {
+  //const { idendereco } = route.params;
 
+  const [perfilend, setPerfilend] = React.useState([]);
+  const [idcliente, setIdCliente] = React.useState(0);
   const [cepend, setCepend] = React.useState("");
   const [tipoend, setTipoend] = React.useState("");
   const [logradouroend, setLogradouroend] = React.useState("");
   const [numeend, setNumeend] = React.useState("");
   const [complementoend, setComplementoend] = React.useState("");
   const [bairroend, setBairroend] = React.useState("");
+
+  // React.useEffect(() => {
+  //   db.transaction((tx) => {
+  //     tx.executeSql("select * from perfil", [], (_, { rows: { _array } }) => {
+  //       setPerfilend(_array);
+  //     });
+  //   });
+  // }, []);
+
+  React.useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql("select idcliente from perfil", [], (_, { rows: { _array } }) => {
+        setIdCliente(_array[0].idcliente.toString());
+        console.log(_array); 
+      });
+    });
+  }, []);
 
   return (
     <View style={estilo.area}>
@@ -67,8 +63,23 @@ export default function Endereco({ route }) {
         style={estilo.fundo}
       >
         <ScrollView>
+        
+          
+         
           <Text style={estilo.dados}> Endereço</Text>
           <Text style={estilo.txt}> "Preencha todos os campos"</Text>
+          <View style={estilo.idcaixa}>
+          {perfilend.map(
+          ({
+           idcliente,  
+        }) => (
+         
+          <TextInput >CÓDIGO</TextInput>
+            )   
+            )}
+            <Text style={estilo.idcaixa}>CÓDIGO : {idcliente} </Text>
+          
+           </View>
 
           <TextInput
             placeholder="CEP"
@@ -101,11 +112,12 @@ export default function Endereco({ route }) {
             onChangeText={(value) => setBairroend(value)}
             value={bairroend}
           />
+          
           <Picker
             selectedValue={tipoend}
             mode="dialog"
             onValueChange={setTipoend}
-            style={estilo.rolo}
+            style={estilo.input}
           >
             <Picker.Item label="Tipo" value="Tipo" />
             <Picker.Item label="Av" value="Av" />
@@ -113,47 +125,62 @@ export default function Endereco({ route }) {
             <Picker.Item label="Al" value="Al" />
             <Picker.Item label="Praça" value="Praça" />
           </Picker>
+        
 
-          <View style={estilo.botao}>
-            <Button title="" />
-            <Text
-              style={estilo.txtlogar}
+          <View style={estilo.cadastrar}>
+          <TouchableOpacity
               onPress={() => {
-                us = usuario;
-                cpf = cpfcli;
-                sh = senha;
-                //fsh = fsenha;
-                ft = foto;
-                sx = sexo;
-                email = emailcli;
-                nome = nomecli;
+                // if (tip == "" || lograd == "" || numer == "" || compl == "" || bair == "" || cep == ""){
+                //   Alert.alert("Alerta", "preencha todos os campos");
+                //   navigation.navigate("Endereco");
+                // } else {
                 tip = tipoend;
-                tel = telefone;
                 lograd = logradouroend;
                 numer = numeend;
                 compl = complementoend;
                 bair = bairroend;
                 cep = cepend;
+                idcli = idcliente;
+                
                 efetuarCadastro();
+                
+                //}
+                
+                navigation.navigate("Login");
+                //gravarPerfilend({dados});
+                
               }}
-              //onPress={() => navigation.navigate("")}
-            >
-              SALVAR{" "}
-            </Text>
-          </View>
+              >
+                <Text style={estilo.botao}> Cadastrar </Text>
+              </TouchableOpacity>
+              </View>
+              
+
         </ScrollView>
       </ImageBackground>
     </View>
   );
 
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="Cadastrar" component={Cadastrar} />
-    </Stack.Navigator>
-  </NavigationContainer>;
+  // <NavigationContainer>
+  //   <Stack.Navigator>
+  //     <Stack.Screen name="Cadastrar" component={Cadastrar} />
+  //   </Stack.Navigator>
+  // </NavigationContainer>;
 }
 
 const estilo = StyleSheet.create({
+//ide cliente
+idcaixa: {
+  borderRadius: 10,
+  backgroundColor: "#ffea00",
+  marginLeft:30,
+  marginRight:30,
+  marginBottom:6,
+  alignItems:'center',
+  padding: 4,
+  marginTop:2,
+  fontWeight: "bold",
+},
   fundo: {
     flex: 1,
     resizeMode: "center",
@@ -178,114 +205,150 @@ const estilo = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
   },
-  areaend: {
-    fontSize: 18,
-    padding: 14,
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
   endcaixa: {
     backgroundColor: "white",
-    color: "#f50057",
-    padding: 18,
+    padding: 13,
     width: "85%",
     margin: 6,
     marginLeft: "auto",
     marginRight: "auto",
     shadowColor: "gray",
-    shadowOpacity: 1,
-    borderRadius: 5,
-    borderBottomColor: "silver",
+    borderRadius: 6,
   },
-  txtlogar: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 18,
-    marginTop: -20,
-    marginBottom: 13,
-  },
+ 
   botao: {
-    borderRadius: 4,
+    fontWeight: "bold",
+    fontSize: 16,
+    marginTop: 10,
     textAlign: "center",
-    marginTop: -60,
+    backgroundColor: "#f9a825",
+    color: "white",
+  },
+  cadastrar: {
+    height: 40,
+    borderRadius: 6,
+    marginTop: 90,
     backgroundColor: "#f9a825",
     width: "85%",
     marginLeft: "auto",
     marginRight: "auto",
   },
-  rolo: {
-    marginTop: -30,
+  input: {
+    marginTop:8,
+    backgroundColor: "white",
+    width: "85%",
     marginLeft: "auto",
     marginRight: "auto",
-    width: "85%",
   },
 });
 
-// function efetuarCadastro() {
-//   Alert.alert(
-//     "CEP: " +
-//       cep +
-//       "\nlograd: " +
-//       lograd +
-//       "\nNumero: " +
-//       numer +
-//       "\nCompl: " +
-//       compl +
-//       "\nBairro: " +
-//       bair +
-//       "\nTipo:" +
-//       tip +
-//       "Nome: " +
-//       nome +
-//       "\nCPF: " +
-//       cpf +
-//       "\nEmail: " +
-//       email +
-//       "\nTel: " +
-//       tel +
-//       "\nSexo: " +
-//       sx +
-//       "Usuario: " +
-//       us +
-//       "\nSenha: " +
-//       sh +
-//       "\nFsh: " +
-//       fsh +
-//       "\nFoto: " +
-//       ft +
-//       "\nEmail: " +
-//       email
-//   );
-
 function efetuarCadastro() {
-  fetch("http://192.168.0.2:8080/projeto/service/endereco/cadastro.php", {
+  fetch("http://192.168.0.2:8080/projetoisaclube/service/endereco/cadastro.php", {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      nomecliente: nome,
-      cpf: cpf,
-      sexo: sx,
-      email: email,
-      telefone: tel,
       tipo: tip,
       logradouro: lograd,
       numero: numer,
       complemento: cep,
       bairro: bair,
       cep: cep,
-      nomeusuario: us,
-      senha: sh,
-      foto: ft,
+      idcliente: idcli,
+      
     }),
   })
-    .then((response) => response.json())
-    .then((resposta) => {
-      console.log(resposta);
-      Alert.alert("Olhe na tela de console");
-    })
-    .catch((error) => console.error(error));
+  //   .then((response) => response.json())
+  //   .then((resposta) => {
+  //     //gravarPerfilend(resposta.saida[0]);
+  //     console.log(resposta);
+  //     alert("Cadastro realizado com sucesso");
+  //    // Alert.alert("Cadastro realizado com sucesso");
+  //   })
+  //   .catch((error) => console.error(error));
+  //   //sairPerfil();
+  // }
+
+  .then((response) => response.json())
+  .then((resposta) => {
+    console.log(resposta);
+    alert("Seu pagamento foi efetuado");
+  })
+  .catch((error) => console.error(error));
+  sairDoApp();
 }
+function sairDoApp(){
+ db.transaction((tx)=>{
+  tx.executeSql("drop table perfil");
+});
+alert("Deslogado do Perfil")
+}
+
+
+
+
+
+
+//   function sairPerfil(){
+//     tx.executeSql("select * from itens", [], (_, { rows }) => {
+//      db.transaction((tx)=>{ 
+//       console.log(JSON.stringify(rows));
+//       tx.executeSql("drop table perfil");
+//     });
+    
+//   }
+// }
+// function gravarPerfilend(dados) {
+//   alert("Endereço Listado");
+
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       "create table if not exists endereco (id integer primary key, idendereco int, tipo text, logradouro text, numero text, complemento text, bairro text, cep text, logado int);"
+//     );
+//   });
+
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       "insert into endereco (idendereco, tipo, logradouro, numero, complemento, bairro, cep,logado)values(?,?,?,?,?,?,?,?)",
+//       [ dados.idendereco,            
+//         dados.tipo,         
+//         dados.logradouro,              
+//         dados.numero,           
+//         dados.complemento,               
+//         dados.bairro,          
+//         dados.cep,
+        
+//       ]
+//     );
+//     tx.executeSql("select * from endereco", [], (_, { rows }) => {
+//       console.log(JSON.stringify(rows));
+//     });
+//     //tx.executeSql("drop table perfil");
+//   });
+// }
+
+// const dbc = SQLite.openDatabase("appisadb.banco");
+
+
+// function gravarPerfilend(idendereco, tipo, logradouro, numero, complemento, bairro, cep) {
+//   alert("Produto Foi Encaminhado Para O Carrinho");
+
+//   dbc.transaction((tx) => {
+//     tx.executeSql(
+//       "create table if not exists endereco(idp integer primary key,idendereco int,tipo text,logradouro text, numero text, complemento text, bairro text, cep text);"
+//     );
+//   });
+
+//   dbc.transaction((tx) => {
+//     tx.executeSql(
+//       "insert into itens(idendereco,tipo,logradouro,numero,complemento,bairro,cep)values(?,?,?,?,?,?,?)",
+//       [idendereco, tipo, logradouro, numero, complemento, bairro, cep]
+//     );
+//     tx.executeSql("select * from endereco", [], (_, { rows }) => {
+//       console.log(JSON.stringify(rows));
+//     });
+//     tx.executeSql("drop table perfil");
+//   });
+// }

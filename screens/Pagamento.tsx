@@ -24,7 +24,7 @@ export default function Pagamento( { navigation }) {
   const [parcela, setParcela] = React.useState(1);
   const [idcliente, setIdCliente] = React.useState(0);
   const [produto, setProduto] = React.useState([]);
-
+  const [perfilend, setPerfilend] = React.useState([]);
   // constante de passagem de dados
   const [descricao, setDescricao] = React.useState("");
   const [valor, setValor] = React.useState("");
@@ -58,6 +58,22 @@ export default function Pagamento( { navigation }) {
     <View>
       <ScrollView>
       <Text>Pagamento de Produto</Text>
+
+      {/* {perfilend.map(
+          ({
+          idcliente,  
+        }) => ( 
+          <TextInput style={estilo.endcaixa} keyboardType="decimal-pad" placeholder="R$0.00" value={idcliente} onChangeText={(value)=>setIdCliente(value)}>{idcliente}</TextInput>
+          // <TextInput
+          // // placeholder="ID"
+          // // keyboardType="numeric" 
+          // //   style={estilo.endcaixa}
+          // //   onChangeText={(value) => setIdCliente(value)}
+          // //   value={idcliente}>{idcliente} </TextInput>
+            )   
+            )}  */}
+
+
       <Picker selectedValue={tipo} mode="dropdown" onValueChange={setTipo}>
         <Picker.Item label="Boleto" value="Boleto"/>
         <Picker.Item label="Crédito" value="Crédito"/>
@@ -115,7 +131,7 @@ export default function Pagamento( { navigation }) {
 }
 
 function efetuarPagamento(){
-  fetch("http://192.168.0.2:8080/projeto/service/pagamento/cadastro.php", {
+  fetch("http://192.168.0.2:8080/projetoisaclube/service/pagamento/cadastro.php", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -149,10 +165,23 @@ function limparCarrinho(){
 const tela = StyleSheet.create({
   pagar: {
     backgroundColor: "#ffea00",
-    padding: 10,
+    padding: 7,
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 17,
+    fontSize: 16,
     marginBottom: 13,
+  },
+  endcaixa: {
+    backgroundColor: "white",
+    color: "#f50057",
+    padding: 18,
+    width: "85%",
+    margin: 6,
+    marginLeft: "auto",
+    marginRight: "auto",
+    shadowColor: "gray",
+    shadowOpacity: 1,
+    borderRadius: 5,
+    borderBottomColor: "silver",
   },
 });

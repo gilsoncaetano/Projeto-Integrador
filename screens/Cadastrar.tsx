@@ -9,7 +9,6 @@ import {
 import {
   SectionList,
   Picker,
-  Button,
   ActivityIndicator,
   StyleSheet,
   Image,
@@ -18,6 +17,7 @@ import {
   Alert,
 } from "react-native";
 import Login from "../screens/Login";
+import PrimeiroCadEnd from "../screens/PrimeiroCadEnd";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as SQLite from "expo-sqlite";
@@ -37,12 +37,12 @@ export default function Cadastrar() {
   return (
     <Stack.Navigator initialRouteName="Cadastra">
       <Stack.Screen name="Cadastra" component={Cadastra} />
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="PrimeiroCadEnd" component={PrimeiroCadEnd} />
     </Stack.Navigator>
   );
 }
 
-function Cadastra({ route, navigation }) {
+function Cadastra({navigation }) {
 
   const [carregado, setCarregado] = React.useState(true);
   const [dados, setDados] = React.useState([]);
@@ -132,6 +132,7 @@ function Cadastra({ route, navigation }) {
             onValueChange={setSexo}
             style={estilo.input}
           >
+            <Picker.Item label="Sexo" />
             <Picker.Item label="Masculino" value="Masculino" />
             <Picker.Item label="Feminino" value="Feminino" />
           </Picker>
@@ -139,17 +140,20 @@ function Cadastra({ route, navigation }) {
           <View style={estilo.cadastrar}>
           <TouchableOpacity
             onPress={() => {
-                nomecl= nomecli;
-                cpf=cpfcli;
-                sx=sexo;
-                email=emailcli;
-                tel=telefone;
-                ft=foto;
-                sh=senha;
-                fsh=fsenha;
-                navigation.navigate("Login", {
-              });
-              efetuarCadastro();
+              
+              navigation.navigate("PrimeiroCadEnd", {
+                nomecli: `${nomecli}`,
+                cpfcli: `${cpfcli}`,
+                sexo: `${sexo}`,
+                emailcli: `${emailcli}`,
+                telefone:`${telefone}`,
+                foto: `${foto}`,
+                senha:`${senha}`, 
+                  
+            }
+            
+          );
+         
             }}
           >
             <Text style={estilo.botao}> Cadastrar </Text>
@@ -220,6 +224,7 @@ const estilo = StyleSheet.create({
   cadastrar: {
     height: 40,
     marginTop:50,
+    marginBottom:25,
     borderRadius: 4,
     backgroundColor: "#f9a825",
     width: "85%",
@@ -229,54 +234,56 @@ const estilo = StyleSheet.create({
 });
 
 
-function efetuarCadastro() {
-  fetch("http://192.168.0.2:8080/projetoisaclube/service/cliente/cadastrar.php", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+// function efetuarCadastro() {
+//   fetch("http://192.168.0.2:8080/projetoisaclube/service/cliente/cadastrar.php", {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
      
-      nomecliente: nomecl,
-      cpf: cpf,
-      sexo: sx,
-      email: email,
-      telefone: tel,
-      senha: sh,
-      foto: ft,
-    }),
-  })
-    .then((response) => response.json())
-    .then((resposta) => {
-     // gravarCadastro(resposta.saida[0]);
-      console.log(resposta);
-      Alert.alert("Cadastro com sucesso");
-    })
-    .catch((error) => console.error(error));
-}
-function gravarCadastro(dados) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "create table if not exists cadastro(id integer primary key, idcliente int, nomecliente text, foto text, cpf text, sexo text, email text, telefone text, logado int);"
-    );
-  })
-  db.transaction((tx) => {
-    tx.executeSql(
-      "insert into cadastro (idcliente, nomecliente, foto, cpf, sexo, email, telefone, logado)values(?,?,?,?,?,?,?,?)",
-      [
-        dados.idcliente,
-        dados.nomecliente,
-        dados.foto,                    
-        dados.cpf,        
-        dados.sexo,         
-        dados.email,         
-        dados.telefone,
-        1,
-      ]
-    );
-    tx.executeSql("select * from cadastro", [], (_, { rows }) => {
-      console.log(rows);
-    });
-  });
-}
+//       nomecliente: nomecl,
+//       cpf: cpf,
+//       sexo: sx,
+//       email: email,
+//       telefone: tel,
+//       senha: sh,
+//       foto: ft,
+//     }),
+//   })
+//     .then((response) => response.json())
+//     .then((resposta) => {
+//      // gravarCadastro(resposta.saida[0]);
+//       console.log(resposta);
+//       Alert.alert("Cadastro com sucesso");
+//     })
+//     .catch((error) => console.error(error));
+//     //gravarCadastro(0);
+// }
+// gravarCadastro();
+// function gravarCadastro(dados) {
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       "create table if not exists cadastro(id integer primary key, idcliente int, nomecliente text, foto text, cpf text, sexo text, email text, telefone text, logado int);"
+//     );
+//   })
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       "insert into cadastro (idcliente, nomecliente, foto, cpf, sexo, email, telefone, logado)values(?,?,?,?,?,?,?,?)",
+//       [
+//         dados.idcliente,
+//         dados.nomecliente,
+//         dados.foto,                    
+//         dados.cpf,        
+//         dados.sexo,         
+//         dados.email,         
+//         dados.telefone,
+//         1,
+//       ]
+//     );
+//     tx.executeSql("select * from cadastro", [], (_, { rows }) => {
+//       console.log(rows);
+//     });
+//   });
+// }

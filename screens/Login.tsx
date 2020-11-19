@@ -55,7 +55,7 @@ function TelaLogin({navigation}){
       >
        <Image source={require("../img/saw-logo.png")} style={estilo.logo} />
        <TextInput
-          placeholder="Email"
+          placeholder="E-mail"
           keyboardType="email-address"
           style={estilo.acesso}
           onChangeText={(value) => setEmail(value)}
@@ -76,15 +76,17 @@ function TelaLogin({navigation}){
         <View style={estilo.inputloga}>
         <TouchableOpacity
           onPress={() => {
+            logaemail = email;
+            sh = senha;
             if (email == "" || senha == "" ){
-              Alert.alert("Alerta", "preencha todos os campos");
-              navigation.navigate("Perfil");
+              Alert.alert("Alerta", "Email ou senha Incorreto");
+              navigation.navigate("Login");
             } else {
-              logaemail = email;
-              sh = senha;
+           // Alert.alert("Alerta", "Logado com sucesso");  
             logar();
-            }
             navigation.navigate("BottomTabNavigation");
+            }
+            
             }}>
           <Text style={estilo.botao}> Login </Text>
         </TouchableOpacity>
@@ -163,6 +165,24 @@ const estilo = StyleSheet.create({
   },
 });
 function logar() {
+  // fetch("http://192.168.0.2:8080/projetoisaclube/service/usuario/listarlog.php", {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     email: logaemail,
+  //     senha: sh,
+  //   }),
+  // })
+  // .then((response) => response.json())
+  //   .then((resposta) => {
+  //     gravarPerfil(resposta.saida[0]);
+  //     console.log(resposta);
+  //     Alert.alert("logado");
+  //   })
+  
   fetch("http://192.168.0.2:8080/projetoisaclube/service/usuario/login.php", {
     method: "POST",
     headers: {
@@ -174,23 +194,24 @@ function logar() {
       senha: sh,
     }),
   })
+ 
     .then((response) => response.json())
     .then((resposta) => {
       gravarPerfil(resposta.saida[0]);
-      console.log(resposta);
-      Alert.alert("logado");
+      //console.log(resposta);
+     // Alert.alert("logado");
     })
     .catch((error) => console.error(error));
 }
 function gravarPerfil(dados) {
   db.transaction((tx) => {
     tx.executeSql(
-      "create table if not exists perfil(id integer primary key, idcliente int, nomecliente text, foto text, cpf text, sexo text, email text, senha text, telefone text,idendereco text, tipo text, logradouro text, numero text, complemento text, bairro text, cep text, idarma text, cpfarma text, funcao text, sigma text, arma text, fabricante text, calibre text, modelo text, cano text, capacidade text, funcionamento text, notafiscal text, datafiscal text, orgaoauto text, codigoauto text, logado int);"
+      "create table if not exists perfil(id integer primary key, idcliente int, nomecliente text, foto text, cpf text, sexo text, email text, senha text, telefone text,idendereco text, logradouro text, numero text, complemento text, bairro text, cidade text, estado text, cep text, idarma text, cpfarma text, funcao text, sigma text, arma text, fabricante text, calibre text, modelo text, cano text, capacidade text, funcionamento text, notafiscal text, datafiscal text, orgaoauto text, codigoauto text, logado int);"
     );
   })
   db.transaction((tx) => {
     tx.executeSql(
-      "insert into perfil (idcliente, nomecliente, foto, cpf, sexo, email, senha, telefone,idendereco, tipo, logradouro, numero, complemento, bairro, cep, idarma, cpfarma, funcao, sigma, arma, fabricante, calibre, modelo, cano, capacidade, funcionamento, notafiscal, datafiscal, orgaoauto, codigoauto, logado)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      "insert into perfil (idcliente, nomecliente, foto, cpf, sexo, email, senha, telefone,idendereco, logradouro, numero, complemento, bairro, cidade, estado, cep, idarma, cpfarma, funcao, sigma, arma, fabricante, calibre, modelo, cano, capacidade, funcionamento, notafiscal, datafiscal, orgaoauto, codigoauto, logado)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
       [
         
         dados.idcliente,
@@ -201,12 +222,13 @@ function gravarPerfil(dados) {
         dados.email,     
         dados.senha,     
         dados.telefone,
-        dados.idendereco,            
-        dados.tipo,         
+        dados.idendereco,                    
         dados.logradouro,              
         dados.numero,           
         dados.complemento,               
-        dados.bairro,          
+        dados.bairro,   
+        dados.cidade,        
+        dados.estado, 
         dados.cep,       
         dados.idarma,          
         dados.cpfarma,           

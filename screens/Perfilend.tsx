@@ -5,6 +5,7 @@ import { ScrollView, RefreshControl } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabNavigator from "../navigation/BottomTabNavigator";
 import Endereco from "../screens/Endereco";
+import EditarEndereco from "../screens/EditarEndereco";
 
 import * as SQLite from "expo-sqlite";
 const Stack = createStackNavigator();
@@ -26,14 +27,11 @@ export default function PerfilEnd() {
       <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator}
       options={{headerTitle:"Endereço"}}/>
       <Stack.Screen name="Endereco" component={Endereco}/>
+      <Stack.Screen name="EditarEndereco" component={EditarEndereco}/>
     </Stack.Navigator>
    );
   
   }
-
-
-
-
   function TelaPerfilend({navigation}){
   const [dados, setDados] = React.useState([]);
   const [perfil, setPerfil] = React.useState([]);
@@ -69,59 +67,52 @@ export default function PerfilEnd() {
         {perfil.map(
           ({
           id,
-          
           idcliente,             
-          nomecliente, 
-          foto,               
-          cpf,        
-          sexo,         
-          email,         
-          telefone,      
-          idendereco,      
-          tipo,         
+          foto,                              
           logradouro,              
           numero,           
           complemento,               
-          bairro,          
+          bairro,  
+          cidade, 
+          estado,         
           cep,       
-          idarma,          
-          cpfarma,           
-          funcao,          
-          sigma,         
-          arma,        
-          fabricante,              
-          calibre,           
-          modelo,          
-          cano,        
-          capacidade,              
-          funcionamento, 
-          notafiscal,              
-          datafiscal,              
-          orgaoauto,             
-          codigoauto,      
-          logado,
+        
           }) => (
             <View style={tela.bloco}>
               <Image
                 source={{ uri: `http://192.168.0.2:8080/projetoisaclube/img/${foto}` }}
                 style={tela.img}
               />
-              <Text style={tela.txt1}>IDC: {idcliente}</Text>
-              <Text style={tela.txt1}>Idendereco: {idendereco}</Text>
-              <Text style={tela.txt1}>Tipo: {tipo}</Text>
+              <View style={tela.blocotxt}>
+              <View style={tela.inputxt}>
               <Text style={tela.txt1}>Logradouro: {logradouro}</Text>
+              </View>
+              <View style={tela.inputxt}>
               <Text style={tela.txt1}>Número: {numero}</Text>
+              </View>
+              <View style={tela.inputxt}>
               <Text style={tela.txt1}>Complemento: {complemento}</Text>
+              </View>
+              <View style={tela.inputxt}>
               <Text style={tela.txt1}>Bairro: {bairro}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Cidade: {cidade}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Estado: {estado}</Text>
+              </View>
+              <View style={tela.inputxt}>
               <Text style={tela.txt1}>CEP: {cep}</Text>
-             
+              </View>
+              </View>
             </View>
           )
         )}
         <View style={tela.inputView}>
          
           <TouchableOpacity onPress={()=>{
-            navigation.navigate("Perfil")
+            navigation.navigate("EditarEndereco")
         }} style={tela.link}>
           
           <Text style={tela.botao2}>Atualizar</Text>
@@ -140,7 +131,7 @@ export default function PerfilEnd() {
 const tela = StyleSheet.create({
   img: {
     borderRadius: 30,
-    width: 220,
+    width: 215,
     height: 250,
     marginLeft: "auto",
     marginRight: "auto",
@@ -155,13 +146,25 @@ const tela = StyleSheet.create({
     fontSize:24,
     backgroundColor: "#8bc34a",
   },
-  txt1:{
-    marginTop:10,
-    padding:10,
-    paddingBottom:8,
-    fontSize:23,
-    backgroundColor: "#E4EBEE",
-  },
+  blocotxt:{
+    marginTop:20,
+    backgroundColor: "#8bc34a",
+    },
+    inputxt: {
+      padding:10,
+      height: 40,
+      borderRadius: 4,
+      marginBottom:10,
+      width: "93%",
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+    txt1:{
+      marginBottom:-10,
+      marginTop:-4,
+      paddingLeft:10,
+      fontSize:23,
+    },
   bloco:{
     width:"90%",
     marginLeft: "auto",

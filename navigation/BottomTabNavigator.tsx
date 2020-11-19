@@ -1,5 +1,6 @@
 import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 
@@ -10,20 +11,33 @@ import Inicial from "../screens/Inicial";
 import Perfil from "../screens/Perfil";
 import Carrinho from "../screens/Carrinho";
 import PedidosRealizados from "../screens/PedidosRealizados";
-import Login from "../screens/Login";
-import Cadastrar from "../screens/Cadastrar";
-import Perfilend from "../screens/Perfilend";
-import Endereco from "../screens/Endereco";
-import Confend from "../screens/Confend";
+//import Dadoscli from "../screens/Dadoscli";
+//import Cep from "../screens/Cep";
+import Boleto from "../screens/Boleto";
+import Credito from "../screens/Credito";
+import Debito from "../screens/Debito";
 import Pagamento from "../screens/Pagamento";
-import ConfirmacaoPag from "../screens/ConfirmacaoPag";
+//import Listar from "../screens/Listar";
 
-
-import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
 
 import { createDrawerNavigator } from "react-navigation-drawer";
+import { View } from "react-native";
+// const Tabs = createBottomTabNavigator({
+//   Home : {
+//     Screen : Home,
+//     navigationOptions : {
+//       tabBarLabel : ({})=> {
+//         <View>
+//           <Ionicons name="md-person" color="#fff" size={22}/>
+//           <Text style = {{color : "#fff"}}> Boleto</Text>
+//         </View>
+//       }
+//       }
+//     },
+//   },{
+// });
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -55,15 +69,24 @@ export default function BottomTabNavigator() {
         }}
       />
 
-{/* <BottomTab.Screen
-        name="Perfilend"
-        component={PerfilendNavigator}
+      <BottomTab.Screen
+        name="Debito"
+        component={DebitoNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="md-person" color={color} />
           ),
         }}
-      /> */}
+      />
+       <BottomTab.Screen
+        name="Credito"
+        component={CreditoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon3 name="opencart" color={color} />
+          ),
+        }}
+      />
 
       <BottomTab.Screen
         name="Carrinho"
@@ -76,25 +99,17 @@ export default function BottomTabNavigator() {
       />
      
 
-      {/* <BottomTab.Screen
-        name="PedidosRealizados"
-        component={PedidosRealizadosNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon3 name="opencart" color={color} />
-          ),
-        }}
-      /> */}
+     
 
-      {/* <BottomTab.Screen
-        name="Login"
-        component={LoginNavigator}
+      <BottomTab.Screen
+        name="Boleto"
+        component={BoletoNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-contact" color={color} />
           ),
         }}
-      /> */}
+      /> 
 
       {/* <BottomTab.Screen
         name="Cadastrar"
@@ -128,24 +143,24 @@ export default function BottomTabNavigator() {
         }}
       /> */}
 
-      <BottomTab.Screen
-        name="Pagamento"
-        component={PagamentoNavigator}
+      {/* <BottomTab.Screen
+        name="Dadoscli"
+        component={DadoscliNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon3 name="opencart" color={color} />
           ),
         }}
-      />
- <BottomTab.Screen
-        name="ConfirmacaoPag"
-        component={ConfirmacaoPagNavigator}
+      /> */}
+ {/* <BottomTab.Screen
+        name="Listar"
+        component={ListarNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon3 name="opencart" color={color} />
           ),
         }}
-      />
+      /> */}
 
 
     </BottomTab.Navigator>
@@ -192,16 +207,16 @@ function PerfilNavigator() {
   );
 }
 
-const PerfilendStack = createStackNavigator();
-function PerfilendNavigator() {
+const DebitoStack = createStackNavigator();
+function DebitoNavigator() {
   return (
-    <PerfilendStack.Navigator>
-      <PerfilendStack.Screen
-        name="Perfilend"
-        component={Perfilend}
-        options={{ headerTitle: "Perfilend" }}
+    <DebitoStack.Navigator>
+      <DebitoStack.Screen
+        name="Debito"
+        component={Debito}
+        options={{ headerTitle: "Debito" }}
       />
-    </PerfilendStack.Navigator>
+    </DebitoStack.Navigator>
   );
 }
 
@@ -217,95 +232,95 @@ function CarrinhoNavigator() {
     </CarrinhoStack.Navigator>
   );
 }
+const CreditoStack = createStackNavigator();
+function CreditoNavigator() {
+  return (
+    <CreditoStack.Navigator>
+      <CreditoStack.Screen
+        name="Credito"
+        component={Credito}
+        options={{ headerTitle: "Credito" }}
+      />
+    </CreditoStack.Navigator>
+  );
+}
 
-// const PedidosRealizadosStack = createStackNavigator();
-// function PedidosRealizadosNavigator() {
+
+const BoletoStack = createStackNavigator();
+function BoletoNavigator() {
+  return (
+    <BoletoStack.Navigator>
+      <BoletoStack.Screen
+        name="Boleto"
+        component={Boleto}
+        options={{ headerTitle: "Boleto" }}
+      />
+    </BoletoStack.Navigator>
+  );
+}
+
+// const DadoscliStack = createStackNavigator();
+// function DadoscliNavigator() {
 //   return (
-//     <PedidosRealizadosStack.Navigator>
-//       <PedidosRealizadosStack.Screen
-//         name="PedidosRealizados"
-//         component={PedidosRealizados}
-//         options={{ headerTitle: "Pedidos Realizados" }}
+//     <DadoscliStack.Navigator>
+//       <DadoscliStack.Screen
+//         name="Dados do cliente "
+//         component={Dadoscli}
+//         options={{ headerTitle: "Dados do cliente" }}
 //       />
-//     </PedidosRealizadosStack.Navigator>
+//     </DadoscliStack.Navigator>
 //   );
 // }
 
-// const LoginStack = createStackNavigator();
-// function LoginNavigator() {
+
+// const EnderecoStack = createStackNavigator();
+// function EnderecoNavigator() {
 //   return (
-//     <LoginStack.Navigator>
-//       <LoginStack.Screen
-//         name="Login"
-//         component={Login}
-//         options={{ headerTitle: "Login" }}
+//     <EnderecoStack.Navigator>
+//       <EnderecoStack.Screen
+//         name="Endereço"
+//         component={Endereco}
+//         options={{ headerTitle: "Endereço" }}
 //       />
-//     </LoginStack.Navigator>
+//     </EnderecoStack.Navigator>
 //   );
 // }
 
-const CadastrarStack = createStackNavigator();
-function CadastrarNavigator() {
-  return (
-    <CadastrarStack.Navigator>
-      <CadastrarStack.Screen
-        name="Cadastrar"
-        component={Cadastrar}
-        options={{ headerTitle: "Cadastrar" }}
-      />
-    </CadastrarStack.Navigator>
-  );
-}
+// const ConfendStack = createStackNavigator();
+// function ConfendNavigator() {
+//   return (
+//     <ConfendStack.Navigator>
+//       <ConfendStack.Screen
+//         name="Confirma Endereço"
+//         component={Confend}
+//         options={{ headerTitle: "Confirma Endereço" }}
+//       />
+//     </ConfendStack.Navigator>
+//   );
+// }
 
+// const PagamentoStack = createStackNavigator();
+// function PagamentoNavigator() {
+//   return (
+//     <PagamentoStack.Navigator>
+//       <PagamentoStack.Screen
+//         name="Pagamento"
+//         component={Pagamento}
+//         options={{ headerTitle: "Pagamento de Produtos" }}
+//       />
+//     </PagamentoStack.Navigator>
+//   );
+// }
 
-const EnderecoStack = createStackNavigator();
-function EnderecoNavigator() {
-  return (
-    <EnderecoStack.Navigator>
-      <EnderecoStack.Screen
-        name="Endereço"
-        component={Endereco}
-        options={{ headerTitle: "Endereço" }}
-      />
-    </EnderecoStack.Navigator>
-  );
-}
-
-const ConfendStack = createStackNavigator();
-function ConfendNavigator() {
-  return (
-    <ConfendStack.Navigator>
-      <ConfendStack.Screen
-        name="Confirma Endereço"
-        component={Confend}
-        options={{ headerTitle: "Confirma Endereço" }}
-      />
-    </ConfendStack.Navigator>
-  );
-}
-
-const PagamentoStack = createStackNavigator();
-function PagamentoNavigator() {
-  return (
-    <PagamentoStack.Navigator>
-      <PagamentoStack.Screen
-        name="Pagamento"
-        component={Pagamento}
-        options={{ headerTitle: "Pagamento de Produtos" }}
-      />
-    </PagamentoStack.Navigator>
-  );
-}
-
-const ConfirmacaoPagStack = createStackNavigator();
-function ConfirmacaoPagNavigator() {
-  return (
-    <ConfirmacaoPagStack.Navigator>
-      <ConfirmacaoPagStack.Screen
-        name="Confirmação De Pagamento"
-        component={ConfirmacaoPag}
-        options={{ headerTitle: "Confirmação De Pagamento" }}
-      />
-    </ConfirmacaoPagStack.Navigator>
-  );
-}
+// const ListarStack = createStackNavigator();
+// function ListarNavigator() {
+//   return (
+//     <ListarStack.Navigator>
+//       <ListarStack.Screen
+//         name="Listar cliente"
+//         component={Listar}
+//         options={{ headerTitle: "Dados do cliente " }}
+//       />
+//     </ListarStack.Navigator>
+//   );
+// }

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Text, View } from "../components/Themed";
 import { TextInput, ScrollView, RefreshControl, } from "react-native";
 import { Picker, Button, StyleSheet, Image } from "react-native";
@@ -6,6 +6,7 @@ import Confend from "./Confend";
 import * as SQLite from "expo-sqlite";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Value } from "react-native-reanimated";
 
 const db = SQLite.openDatabase("appisadb.banco");
 const Stack = createStackNavigator();
@@ -29,7 +30,9 @@ export default function Carrinho() {
 }
 function CarrinhoLoja({navigation}){
   const [dados, setDados] = React.useState([]);
-  const [quantidade, setQuantidade] = React.useState("1");
+  const [quantidade, setQuantidade] = useState(1);
+  const [valor, setValor] = useState(0);
+  const [clinques, setClinques] = useState(0);
 
   // ---Vamos criar uma constante para realizar o refresh(atualizarção da tela)
   const [refreshing, setRefreshing] = React.useState(false);
@@ -60,23 +63,46 @@ function CarrinhoLoja({navigation}){
       <ScrollView refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
       }>
-        <Text> Veja o que tem no carrinho</Text>
-        <Text>"Toque na tela e arraster para baixo para atualizar o carrinho"</Text>
+        <Text style={tela.titulo}> Veja seus produtos no carrinho</Text>
+        <Text style={tela.infor}>"Toque na tela e arraster para baixo para atualizar o carrinho"</Text>
         {dados.map(({ idp, idproduto, nomeproduto, preco, foto }) => (
           <View style={tela.conteiner} key={idproduto}>
             <Image
               source={{ uri: `http://192.168.0.2:8080/projetoisaclube/img/${foto}` }}
               style={tela.img}
             />
-            <Text>Produto:{nomeproduto}</Text>
-            <Text>Preço:{preco}</Text>
-            <Text>Quantidade:</Text>
+            <Text style={tela.produto}>{nomeproduto}</Text>
+            <Text style={tela.preco}>{preco}</Text>
+            {/* <Text>Quantidade: </Text>
             <TextInput
               placeholder="1"
               value={quantidade}
               onChangeText={(value) => setQuantidade(value)}
-            />
-            <View style={tela.inputView}>
+            /> */}
+
+          <View style={tela.input2}>
+          <TouchableOpacity onPress={()=>{
+            setQuantidade(quantidade -1);
+            //setClinques(clinques + 1);
+            }} style={tela.link}>
+                <Text >- 1</Text>
+          </TouchableOpacity>
+
+            <View style={tela.inputTxt}>
+                    
+          <Text style={tela.txt} value={quantidade} onChangeText={(value) => setQuantidade(value)}
+            >{quantidade}</Text>
+          </View>
+
+          <TouchableOpacity onPress={()=>{
+            setQuantidade(quantidade + 1);
+            //setClinques(clinques + 1);
+             }} style={tela.link}>
+          <Text >+ 1</Text>
+          </TouchableOpacity>
+           </View>
+
+            <View style={tela.inputRetira}>
             <TouchableOpacity
               onPress={() => {
                 db.transaction((tx) => {
@@ -87,7 +113,7 @@ function CarrinhoLoja({navigation}){
               <Text style={tela.inputcar}>Retira do Carrinho</Text>
             </TouchableOpacity>
             </View>
-            
+           
           </View>
         ))}
         <View style={tela.inputView}>
@@ -127,6 +153,75 @@ const tela = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
+  titulo:{
+    color: "white",
+    fontWeight: "bold",
+    marginTop:17,
+    fontSize: 20,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  infor:{
+    color: "#f44336",
+    marginTop:10,
+    marginBottom:10,
+    fontSize: 12,
+    paddingLeft:10,
+    paddingRight:10,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+produto:{
+  marginTop:10,
+  fontSize: 16,
+  marginLeft: "auto",
+  marginRight: "auto",
+},
+preco:{
+  fontWeight: "bold",
+  marginTop:15,
+  fontSize: 16,
+  marginLeft: "auto",
+  marginRight: "auto",
+},
+  input2:{
+    marginTop:20,
+    marginLeft:95,
+    marginRight:95,
+    flexDirection:"row",
+    alignItems:'center',
+    justifyContent:'space-between',
+    backgroundColor: "#0000",
+  },
+  link: {
+    borderRadius: 6,
+    backgroundColor: "#ffea00",
+    paddingLeft:20,
+    paddingRight:20,
+    alignItems:'center',
+    padding: 10,
+    fontWeight: "bold",
+  },
+txt:{
+  fontSize: 20,
+  backgroundColor: "#0000",
+},
+inputTxt:{
+  borderRadius: 6,
+  paddingLeft:20,
+  paddingRight:20,
+  padding: 6,
+},
+  inputRetira: {
+    padding: 7,
+    height: 35,
+    borderRadius: 6,
+    marginTop: 30,
+    backgroundColor: "#f44336",
+    width: "50%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
     inputView: {
     padding: 10,
     height: 40,
@@ -134,6 +229,7 @@ const tela = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#ffea00",
     width: "85%",
+    marginBottom:25,
     marginLeft: "auto",
     marginRight: "auto",
   },

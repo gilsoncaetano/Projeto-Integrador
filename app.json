@@ -10,7 +10,7 @@
     "splash": {
       "image": "./img/logoclube.png",
       "resizeMode": "contain",
-      "backgroundColor": "#388e3c"
+      "backgroundColor": "#17882c"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

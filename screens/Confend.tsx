@@ -2,9 +2,9 @@ import * as React from "react";
 import { Text, View } from "../components/Themed";
 import Pagamento from "./Pagamento";
 import Endereco from "./Endereco";
-import Perfilend from "./Perfilend";
+import EditarEndereco from "./EditarEndereco";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TextInput, ScrollView,StyleSheet, RefreshControl,TouchableOpacity } from "react-native";
+import { TextInput,Image, ScrollView,StyleSheet, RefreshControl,TouchableOpacity } from "react-native";
 
 import * as SQLite from "expo-sqlite";
 const Stack = createStackNavigator();
@@ -15,7 +15,7 @@ export default function ConfirmacaoEndereco() {
     <Stack.Navigator initialRouteName="ConfEnd">
       <Stack.Screen name="ConfEnd" component={ConfEnd} />
       <Stack.Screen name="Endereco" component={Endereco} />
-      <Stack.Screen name="Perfilend" component={Perfilend} />
+      <Stack.Screen name="EditarEndereco" component={EditarEndereco} />
       <Stack.Screen name="Pagamento" component={Pagamento} />
     </Stack.Navigator>
   );
@@ -27,7 +27,7 @@ function ConfEnd({navigation}){
 
   React.useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql("select * from endereco", [], (_, { rows: { _array } }) => {
+      tx.executeSql("select * from perfil", [], (_, { rows: { _array } }) => {
         setEndereco(_array);
       });
     });
@@ -36,28 +36,50 @@ function ConfEnd({navigation}){
   return (
     <View style={tela.conteiner}>
       <ScrollView>
-      <Text style={tela.caixatxt}>Estamos dentro de Confirmação de Endereço</Text>
+      <Text style={tela.caixatxt}>Confirmação de Endereço</Text>
       {endereco.map(
         ({
-          idendereco,
+          id,
+          idcliente,             
+          foto,
           tipo,
           logradouro,
           numero,
           complemento,
           bairro,
-          cep,
-          idcliente,
+          cidade, 
+          estado,         
+          cep, 
           logado,
         })=>(
-          <View >
-        <Text>ID Endereco:{idendereco}</Text>
-          <Text>Tipo:{tipo}</Text>
-          <Text>Logradouro:{logradouro}</Text>
-          <Text>Número:{numero}</Text>
-          <Text>Complemento:{complemento}</Text>
-          <Text>Bairro{bairro}</Text>
-          <Text>CEP{cep}</Text>
-        <Text>ID Cliente{idcliente}</Text>
+          <View style={tela.bloco}>
+            <Image
+                source={{ uri: `http://192.168.0.2:8080/projetoisaclube/img/${foto}` }}
+                style={tela.img}
+              />
+            <View style={tela.blocotxt}>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Logradouro: {logradouro}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Número: {numero}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Complemento: {complemento}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Bairro: {bairro}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Cidade: {cidade}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>Estado: {estado}</Text>
+              </View>
+              <View style={tela.inputxt}>
+              <Text style={tela.txt1}>CEP: {cep}</Text>
+              </View>
+              </View>
         </View>
         )
       )}
@@ -70,12 +92,12 @@ function ConfEnd({navigation}){
               </TouchableOpacity>
               <Text>OU</Text>
               <TouchableOpacity onPress={()=>{
-              navigation.navigate("Perfilend")
+              navigation.navigate("EditarEndereco")
         }} style={tela.link}>
           
           <Text >Atualizar</Text>
         </TouchableOpacity>
-              </View>
+        </View>
       <View style={tela.inputend}>
       <TouchableOpacity onPress={()=>{
            navigation.navigate("Pagamento")
@@ -90,15 +112,49 @@ function ConfEnd({navigation}){
 }
 
 const tela = StyleSheet.create({
+  img: {
+    borderRadius: 30,
+    width: 215,
+    height: 250,
+    marginLeft: "auto",
+    marginRight: "auto",
+    flex: 1,
+  },
+  blocotxt:{
+   marginTop:20,
+  backgroundColor: "#8bc34a",
+  },
+  inputxt: {
+  padding:10,
+  height: 40,
+  borderRadius: 4,
+  marginBottom:10,
+  width: "93%",
+  marginLeft: "auto",
+  marginRight: "auto",
+  },
+  txt1:{
+  marginBottom:-10,
+  marginTop:-4,
+  paddingLeft:10,
+  fontSize:23,
+  },
  inputpaga: {
   fontWeight: "bold",
   fontSize: 16,
   textAlign: "center",
 },
+bloco:{
+  width:"90%",
+  marginLeft: "auto",
+  marginRight: "auto",
+  backgroundColor: "#8bc34a",
+  },
 inputend: {
   padding: 10,
   height: 40,
   marginTop:30,
+  marginBottom:30,
   borderRadius: 4,
   backgroundColor: "#ffea00",
   width: "85%",
@@ -114,7 +170,7 @@ link: {
   fontWeight: "bold",
 },
 inputView:{
-  marginTop:50,
+  marginTop:20,
   marginLeft:30,
   marginRight:30,
   flexDirection:"row",
@@ -135,6 +191,8 @@ caixatxt: {
   marginBottom: 20,
   marginLeft: "auto",
   marginRight: "auto",
+  fontWeight: "bold",
+  fontSize:20,
   backgroundColor: "#8bc34a",
 },
 });

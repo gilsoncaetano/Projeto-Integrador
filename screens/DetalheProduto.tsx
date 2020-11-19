@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { View, Text } from "../components/Themed";
 import { Image, StyleSheet, ActivityIndicator } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
@@ -8,13 +8,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Carrinho from "./Carrinho";
 import { NavigationContainer } from "@react-navigation/native";
 
+let tipo = 0;
+
 const Stack = createStackNavigator();
 export default function DetalheProduto({ route,navigation }) {
-  
-  const { idproduto } = route.params;
+ 
+  const {idproduto } = route.params;
+
+ //const [tipo1, setTipo1] = React.useState(0);
   const [carregado, setCarregado] = React.useState(true);
   const [dados, setDados] = React.useState([]);
-
   React.useEffect(() => {
     fetch(
       `http://192.168.0.2:8080/projetoisaclube/service/produto/detalheproduto.php?idproduto=${idproduto}`
@@ -72,22 +75,33 @@ export default function DetalheProduto({ route,navigation }) {
                   renderText={(valor) => <Text>{valor} </Text>}
                 />
               </Text>
-
-              <View style={tela.inputView}>
+                       
+              
+              {item.tipo=="Permitido" ? (
+                <View style={tela.inputView}>
               <TouchableOpacity
-                onPress={() => { 
+                onPress={() => {
                   //navigation.navigate("Carrinho")
                   adicionarAoCarrinho( 
                     `${idproduto}`,
                     `${item.nomeproduto}`,
                     `${item.preco}`,
                     `${item.foto1}`
+                    
+                   
                   );
                 }}>
                 <Text style={tela.inputdeth}>Adiciona ao Carrinho</Text>
               </TouchableOpacity>
               </View>
-
+                ):(
+                  <View style={tela.aviso}>
+                    <Text style={tela.txtaviso}>"Produtos Controlado não e possivel adicionar"</Text>
+                    <Text style={tela.txtaviso2}>"ao carrinho, compra somente na Loja"</Text>
+                    </View>
+                )
+              }
+            
               <View style={tela.inputView}>
               <TouchableOpacity onPress={()=>{
                navigation.navigate("Carrinho")
@@ -118,6 +132,27 @@ const tela = StyleSheet.create({
     height: 250,
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  txtaviso: {
+    color: "#f44336",
+    padding:5,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  txtaviso2: {
+    color:"#f44336",
+    marginTop:-9,
+    padding:5,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  aviso:{
+    marginTop:17,
+    width: "85%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginBottom:-10,
+    backgroundColor: "#8bc34a",
   },
   inputdeth: {
     fontWeight: "bold",
@@ -153,7 +188,6 @@ const tela = StyleSheet.create({
   },
   txt: {
     color: "white",
-    textAlign: "center",
     padding: 11,
     fontSize: 19,
   },
@@ -170,7 +204,7 @@ const tela = StyleSheet.create({
 const db = SQLite.openDatabase("appisadb.banco");
 
 function adicionarAoCarrinho(idcliente, nome, preco, foto) {
-  alert("Produto Foi Encaminhado Para O Carrinho");
+  alert("Produto Encaminhado Para o Carrinho");
 
   db.transaction((tx) => {
     tx.executeSql(
@@ -186,6 +220,6 @@ function adicionarAoCarrinho(idcliente, nome, preco, foto) {
     tx.executeSql("select * from itens", [], (_, { rows }) => {
       console.log(JSON.stringify(rows));
     });
-    tx.executeSql("drop table perfil");
+    //tx.executeSql("drop table endereco");
   });
 }

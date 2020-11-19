@@ -11,18 +11,11 @@ import {
   unstable_enableLogBox,
   Alert,
 } from "react-native";
-import Cadastrar from "../screens/Cadastrar";
-import Inicial from "../screens/Inicial";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import * as SQLite from "expo-sqlite";
 import {StatusBar} from 'expo-status-bar';
 import {useState} from 'react';
-//import { Formik, Field, Form } from "formik";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-
-const db = SQLite.openDatabase("appisadb.banco");
-//const dbc = SQLite.openDatabase("appisadb.banco");
 const Stack = createStackNavigator();
 let lograd = "";
 let numer = "";
@@ -32,14 +25,30 @@ let cidadeend = "";
 let estadoend = "";
 let cepend = "";
 let idcli = 0;
+let nomecl = "";
+let cpf = "";
+let sx = "";
+let email = "";
+let tel = "";
+let ft = "";
+let sh = "";
 
-
-export default function Endereco({navigation }) {
+export default function Endereco({ route, navigation }) {
+  const { idcliente } = route.params;
+  const { nomecli } = route.params;
+  const { cpfcli } = route.params;
+  const { sexo } = route.params;
+  const { emailcli } = route.params;
+  const { telefone } = route.params;
+  const { foto } = route.params;
+  const { senha } = route.params;
+  
+    
 
   const [perfilend, setPerfilend] = React.useState([]);
-  const [idcliente, setIdCliente] = React.useState([0]);
-  const [cep, setCep] = useState("")
-  const [endereco, setEndereco] = useState(null)
+  //const [nomecli, setNomecli] = React.useState("ggg");
+  const [cep, setCep] = useState("");
+  const [endereco, setEndereco] = useState(null);
   const [logradouro, setLogradouro] = React.useState("");
   const [numero, setNumero] = React.useState("");
   const [complemento, setComplemento] = React.useState("");
@@ -49,7 +58,6 @@ export default function Endereco({navigation }) {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
 
-  
 
   const buscar = () => {
     if(cep.replace("-","").length != 8){
@@ -71,16 +79,6 @@ export default function Endereco({navigation }) {
       .finally(() => setCarregando(false))
   }
 
-  React.useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql("select idcliente from perfil", [], (_, { rows: { _array } }) => {
-        setIdCliente(_array[0].idcliente.toString());
-        console.log(_array); 
-      });
-
-    });
-  }, []);
-
   return (
     <View style={estilo.area}>
       <ImageBackground
@@ -88,27 +86,22 @@ export default function Endereco({navigation }) {
         style={estilo.fundo}
       >
         <ScrollView>
-   
+   {/* <View>
+        <Text > Nome cliente: {nomecli}</Text>
+        <Text > CPF:{cpfcli}</Text>
+        <Text >Sexo:{sexo}</Text>
+        <Text > E-mail: {emailcli}</Text>
+        <Text > Telefone:{telefone}</Text>
+        <Text > Foto:{foto}</Text>
+        <Text > Senha: {senha}</Text>
+        
+    </View>    */}
+         
           <Text style={estilo.dados}> Endereço</Text>
           <Text style={estilo.txt}> "Preencha todos os campos"</Text>
-          
-          <View style={estilo.idcaixa}>
-          {perfilend.map(
-          ({
-           idcliente,  
-        }) => (
-         
-          <TextInput >CÓDIGO</TextInput>
-            )   
-            )}
-            <Text style={estilo.idcaixa}>CÓDIGO : {idcliente} </Text>
-            
-          
-           </View>
 
-          
-
-        <View style={estilo.inputView}>  
+        
+          <View style={estilo.inputView}>  
         <View style={estilo.inputCep}>
         <TextInput
           placeholder="Buscar CEP"
@@ -181,10 +174,19 @@ export default function Endereco({navigation }) {
 
         </View>
         )}
+          
+
 
           <View style={estilo.cadastrar}>
           <TouchableOpacity
               onPress={() => {
+                nomecl = nomecli;
+                cpf = cpfcli;
+                sx = sexo;
+                email = emailcli;
+                tel = telefone;
+                ft = foto;
+                sh = senha;
                 lograd = logradouro;
                 numer = numero;
                 compl = complemento;
@@ -192,18 +194,16 @@ export default function Endereco({navigation }) {
                 cidadeend = localidade;
                 estadoend = uf;
                 cepend = cep;
-                idcli = idcliente;
-                
-                 if (lograd == "" || numer == "" || compl == "" || bair == "" || cidadeend == "" || estadoend == "" ||  cepend == ""){
+
+                if (lograd == "" || numer == "" || compl == "" || bair == "" || cidadeend == "" || estadoend == "" || cep == ""){
                   Alert.alert("Alerta", "Para Validadar todos os campos Preenchido altomatico e preciso da um espaço ao final de cada campo preenchedo altomatio!");
-                  navigation.navigate("Endereco");
+                  navigation.navigate("PrimeiroCadEnd");
                 } else {
-               Alert.alert("Alerta", "Endereço cadastrado com sucesso");
-                              
-                efetuarCadastro();
-                navigation.navigate("Inicial");
-                //gravarPerfilend({dados});
+                  Alert.alert("Alerta", "Cliente cadastrado com sucesso!");
                 
+                efetuarCadastro();
+               // navigation.navigate("Login");
+                               
               }}}
               >
                 <Text style={estilo.botao}> Cadastrar </Text>
@@ -216,11 +216,11 @@ export default function Endereco({navigation }) {
     </View>
   );
 
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="Inicial" component={Inicial} />
-    </Stack.Navigator>
-  </NavigationContainer>;
+  // <NavigationContainer>
+  //   <Stack.Navigator>
+  //     <Stack.Screen name="Login" component={Login} />
+  //   </Stack.Navigator>
+  // </NavigationContainer>;
 }
 
 const estilo = StyleSheet.create({
@@ -367,7 +367,7 @@ idcaixa: {
     height: 40,
     borderRadius: 6,
     marginTop: 80,
-    marginBottom:15,
+    marginBottom:25,
     backgroundColor: "#f9a825",
     width: "85%",
     marginLeft: "auto",
@@ -417,27 +417,8 @@ idcaixa: {
   },
 });
 
-// function efetuarCadastro() {
-//   Alert.alert(
-//     "CEP: " +
-//       cepend +
-//       "\nlograd: " +
-//       lograd +
-//       "\nNumero: " +
-//       numer +
-//       "\nCompl: " +
-//       compl +
-//       "\nBairro: " +
-//       bair +
-//       "\nCidade:" +
-//       cidadeend +
-//       "\nEstado:" +
-//       estadoend
-//   );
-
-
 function efetuarCadastro() {
-  fetch("http://192.168.0.2:8080/projetoisaclube/service/endereco/cadastro.php", {
+  fetch("http://192.168.0.2:8080/projetoisaclube/service/cliente/cadend.php", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -452,6 +433,13 @@ function efetuarCadastro() {
       estado: estadoend ,
       cep: cepend,
       idcliente: idcli,
+      nomecliente: nomecl,
+      cpf: cpf,
+      sexo: sx,
+      email: email,
+      telefone: tel,
+      senha: sh,
+      foto: ft,
       
     }),
   })
@@ -460,14 +448,9 @@ function efetuarCadastro() {
   .then((resposta) => {
    
     console.log(resposta);
-    //Alert.alert("Endereço cadastrado ");
+  
   })
   .catch((error) => console.error(error));
- // sairDoApp();
+
 }
-// function sairDoApp(){
-//  db.transaction((tx)=>{
-//   tx.executeSql("drop table perfil");
-// });
-// alert("Deslogado do Perfil")
 

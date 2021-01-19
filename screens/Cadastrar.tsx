@@ -74,12 +74,14 @@ function Cadastra({navigation }) {
           <Text style={estilo.txt}> "Preencha todos os campos"</Text>
           <TextInput
             placeholder="Nome Completo"
+            placeholderTextColor="#999"
             style={estilo.cadastro}
             onChangeText={(value) => setNomecli(value)}
             value={nomecli}
           />
           <TextInput
             placeholder="CPF"
+            placeholderTextColor="#999"
             keyboardType="phone-pad"
             style={estilo.cadastro}
             onChangeText={(value) => setCPFcli(value)}
@@ -97,6 +99,7 @@ function Cadastra({navigation }) {
           />
           <TextInput
             placeholder="Telefone"
+            placeholderTextColor="#999"
             keyboardType="phone-pad"
             style={estilo.cadastro}
             onChangeText={(value) => setTelefone(value)}
@@ -104,6 +107,7 @@ function Cadastra({navigation }) {
           />
           <TextInput
             placeholder="Foto De Perfil"
+            placeholderTextColor="#999"
             style={estilo.cadastro}
             onChangeText={(value) => setFoto(value)}
             value={foto}
@@ -112,6 +116,7 @@ function Cadastra({navigation }) {
           <TextInput
             secureTextEntry
             placeholder="Senha"
+            placeholderTextColor="#999"
             style={estilo.cadastro}
             onChangeText={(value) => setSenha(value)}
             value={senha}

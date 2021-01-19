@@ -9,6 +9,7 @@ import BottomTabNavigator from "../navigation/BottomTabNavigator";
 import ConfirmacaoPag from "./ConfirmacaoPag";
 import Debito from "../screens/Debito";
 import Credito from "../screens/Credito";
+import Boleto from "../screens/Boleto";
 
 const db = SQLite.openDatabase('appisadb.banco');
 const Stack = createStackNavigator();
@@ -29,6 +30,7 @@ export default function Pagamento() {
     options={{headerTitle:"Confirmacão de Pagamento"}}/>
     <Stack.Screen name="ConfirmacaoPag" component={ConfirmacaoPag}/>
     <Stack.Screen name="Debito" component={Debito}/>
+    <Stack.Screen name="Boleto" component={Boleto}/>
     <Stack.Screen name="Credito" component={Credito}/>
   </Stack.Navigator>
  );
@@ -77,93 +79,59 @@ export default function Pagamento() {
   return (
     <View style={tela.area}>
       <ScrollView>
-      <Text style={tela.titulo}>Pagamento de Produto</Text>
+      <Text style={tela.titulo}>Cartão de Credito</Text>
 
-      {/* {perfilend.map(
-          ({
-          idcliente,  
-        }) => ( 
-          <TextInput style={estilo.endcaixa} keyboardType="decimal-pad" placeholder="R$0.00" value={idcliente} onChangeText={(value)=>setIdCliente(value)}>{idcliente}</TextInput>
-          // <TextInput
-          // // placeholder="ID"
-          // // keyboardType="numeric" 
-          // //   style={estilo.endcaixa}
-          // //   onChangeText={(value) => setIdCliente(value)}
-          // //   value={idcliente}>{idcliente} </TextInput>
-            )   
-            )}  */}
-           
-            <View style={tela.ViewPaga} >
+
+        <View style={tela.inputView}>
+        
+        <TouchableOpacity onPress={()=>{
+          navigation.navigate("Debito")
+          }} style={tela.link}>
+            <Image
+          source={require("../img/card3.png")}
+          style={tela.img}
+           ></Image>
+            <Text >Debito</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={()=>{
-            setBoleto(boleto);
-            }} >
+          navigation.navigate("Credito")
+          }} style={tela.link}>
             <Image
-            source={require("../img/boleto1.png")}
-            style={tela.boleto}
-             ></Image>
-            <Text style={tela.InputTxt}>Boleto</Text>
-          </TouchableOpacity>
+          source={require("../img/card.png")}
+          style={tela.img}
+           ></Image>
+              <Text >Credito</Text>
+            </TouchableOpacity>
 
-
-          <TouchableOpacity onPress={()=>{
-            setDebito(debito);
-            }} >
-            <Image
-            source={require("../img/card1.png")}
-            style={tela.boleto}
-             ></Image>
-            <Text style={tela.InputTxt}>Debito</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>{
-            navigation.navigate("Debito")
-            }} >
-            <Image
-            source={require("../img/card.png")}
-            style={tela.boleto}
-             ></Image>
-            <Text style={tela.InputTxt}>credito</Text>
-          </TouchableOpacity>
-  
-            </View>
-            
-      
-
-
-
-
-            
-            {/* <View style={tela.input2}>
-          <TouchableOpacity onPress={()=>{
-            setQuantidade(quantidade -1);
-            }} style={tela.link}>
-                <Text >- 1</Text>
-          </TouchableOpacity>
-
-            <View style={tela.inputTxt}>
-                    
-          
-
-          <TouchableOpacity onPress={()=>{
-            setQuantidade(quantidade + 1);
-             }} style={tela.link}>
-          <Text >+ 1</Text>
-          </TouchableOpacity>
-           </View> */}
-
-
-      {/* <Picker selectedValue={tipo} mode="dropdown" onValueChange={setTipo}>
-        <Picker.Item label="Boleto" value="Boleto"/>
-        <Picker.Item label="Crédito" value="Crédito"/>
-        <Picker.Item label="Débito" value="Débito"/>
-      </Picker> */}
-
-      <TextInput placeholder="Descrição do pagamento" value={descricao} onChangeText={(value)=>setDescricao(value)}/>
-      <Text>Valor da Compra:</Text>
-      <TextInput keyboardType="decimal-pad" placeholder="R$0.00" value={valor} onChangeText={(value)=>setValor(value)}/>
-
-      <Text>Selecione as parcelas</Text>
+            <TouchableOpacity onPress={()=>{
+              navigation.navigate("Boleto")
+      }} style={tela.link}>
+        <Image
+          source={require("../img/boleto4.png")}
+          style={tela.img}
+           ></Image>
+        <Text >Boleto</Text>
+      </TouchableOpacity>
+      </View>
+     
+      <View>
+        <View style={tela.inputView2}>
+      <Text style={tela.txt1}>Número do cartão</Text>
+      <TextInput style={tela.inputxt} placeholder="1234.1234.1234.1234"></TextInput>
+      <Text style={tela.txt1}>Nome impresso no cartão</Text>
+      <TextInput style={tela.inputxt} placeholder="Titular do cartão"></TextInput>
+      </View>
+      <View style={tela.inputView1}>
+      <Text style={tela.txt1}>Validade</Text>
+      <Text style={tela.txt1}>cvv</Text>
+      </View>
+      <View style={tela.inputView1}>
+      <TextInput style={tela.input2} placeholder="00/00"></TextInput>
+      <TextInput style={tela.input2} placeholder="***"></TextInput>
+      </View>
+      <View style={tela.inputView2}>
+      <Text style={tela.txt1}>número de parcelas</Text>
       <Picker selectedValue={parcela}mode="dropdown"onValueChange={(parcela) => {
           setParcela(parcela);
           setVParcelas((parseFloat(valor) / parcela).toString());
@@ -181,9 +149,14 @@ export default function Pagamento() {
         <Picker.Item label="9x sem juros" value="9"/>
         <Picker.Item label="10x sem juros" value="10"/>
       </Picker>
-      <Text>Valor das Parcelas</Text>
-      <TextInput keyboardType="decimal-pad" placeholder="R$0.00" value={vParcelas} onChangeText={(value) => setVParcelas(value)}/>
+      <Text style={tela.txt1}>Valor das Parcelas</Text>
+      <TextInput style={tela.txt1} keyboardType="decimal-pad" placeholder="R$0.00" value={vParcelas} onChangeText={(value) => setVParcelas(value)}/>
+      </View>
+      </View>
 
+      <Text style={tela.valorTxt1}>Valor total pago no cartão:        R$ {valor}</Text>
+      <TextInput keyboardType="decimal-pad" onChangeText={(value) => setValor(value)}/>
+    
       <View style={tela.inputpagar}>
       <TouchableOpacity onPress={()=>{
         navigation.navigate("ConfirmacaoPag")
@@ -198,7 +171,7 @@ export default function Pagamento() {
       
        // navigation.navigate("ConfirmacaoPagamento");
       }}>
-        <Text style={tela.pagar}>Pagar</Text>
+        <Text style={tela.pagar}>Pagar com cartão de crédito</Text>
       </TouchableOpacity>
       </View>
       </ScrollView>
@@ -216,8 +189,8 @@ function efetuarPagamento(){
     },
     body: JSON.stringify({
       idcliente: idc,
-      tipo: tp,
-      descricao: ds,
+      tipo: "Cartão de crédito",
+      descricao: "Parcelamento a opçoes do cliente",
       valor: vl,
       parcelas: qp,
       valorparcela: vp,
@@ -240,6 +213,58 @@ function limparCarrinho(){
 }
 
 const tela = StyleSheet.create({
+  valorTxt1:{
+    marginTop:10,
+    marginLeft:25,
+    fontWeight: "bold",
+    color:'#388e3c',
+    fontSize:16,
+    marginBottom:-20,
+  },
+  inputView1:{
+    marginLeft:10,
+    marginRight:10,
+    flexDirection:"row",
+    alignItems:'center',
+    justifyContent:'space-between',
+   // backgroundColor: "#8bc34a",
+  },
+  inputView2:{
+    // borderWidth:2,
+    // borderColor:"red",
+    marginTop:20,
+    marginLeft:10,
+    marginRight:10,
+    //flexDirection:"row",
+    //alignItems:'center',
+    //justifyContent:'space-between',
+   // backgroundColor: "#8bc34a",
+  },
+  inputxt: {
+    //marginTop:10,
+    padding:10,
+    height: 40,
+    borderRadius: 4,
+    marginBottom:10,
+    width: "100%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderWidth:1,
+    borderColor:"black",
+  },
+  txt1:{
+    fontWeight: "bold",
+    marginRight:130,
+  },
+  input2:{
+    borderRadius: 4,
+    borderWidth:1,
+    borderColor:"black",
+    height: 40,
+    padding:10,
+    fontSize:15,
+    width: "45%",
+  },
    area: {
    //backgroundColor: "#ffea00",
    //backgroundColor: "white",
@@ -320,5 +345,30 @@ const tela = StyleSheet.create({
     shadowOpacity: 1,
     borderRadius: 5,
     borderBottomColor: "silver",
+  },
+  img: {
+    width: 40,
+    height: 40,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 3,
+  },
+ 
+  link: {
+    borderRadius: 6,
+    marginLeft:10,
+    marginRight:10,
+    borderWidth:1,
+    borderColor:"red",
+    alignItems:'center',
+    padding: 10,
+    fontWeight: "bold",
+  },
+  inputView:{
+    backgroundColor: "#eeeeee",
+    padding:5,
+    marginTop:30,
+    flexDirection:"row",
+    justifyContent:'space-between',
   },
 });

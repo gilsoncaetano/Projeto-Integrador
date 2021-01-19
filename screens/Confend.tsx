@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, View } from "../components/Themed";
-import Pagamento from "./Pagamento";
+import Credito from "./Credito";
 import Endereco from "./Endereco";
 import EditarEndereco from "./EditarEndereco";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -16,7 +16,7 @@ export default function ConfirmacaoEndereco() {
       <Stack.Screen name="ConfEnd" component={ConfEnd} />
       <Stack.Screen name="Endereco" component={Endereco} />
       <Stack.Screen name="EditarEndereco" component={EditarEndereco} />
-      <Stack.Screen name="Pagamento" component={Pagamento} />
+      <Stack.Screen name="Credito" component={Credito} />
     </Stack.Navigator>
   );
 }
@@ -100,7 +100,7 @@ function ConfEnd({navigation}){
         </View>
       <View style={tela.inputend}>
       <TouchableOpacity onPress={()=>{
-           navigation.navigate("Pagamento")
+           navigation.navigate("Credito")
         }}>
           
           <Text style={tela.inputpaga}>Ir para pagamento</Text>

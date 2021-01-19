@@ -69,7 +69,7 @@ export default function BottomTabNavigator() {
         }}
       />
 
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Debito"
         component={DebitoNavigator}
         options={{
@@ -86,7 +86,7 @@ export default function BottomTabNavigator() {
             <TabBarIcon3 name="opencart" color={color} />
           ),
         }}
-      />
+      /> */}
 
       <BottomTab.Screen
         name="Carrinho"
@@ -101,7 +101,7 @@ export default function BottomTabNavigator() {
 
      
 
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Boleto"
         component={BoletoNavigator}
         options={{
@@ -109,7 +109,7 @@ export default function BottomTabNavigator() {
             <TabBarIcon name="ios-contact" color={color} />
           ),
         }}
-      /> 
+      />  */}
 
       {/* <BottomTab.Screen
         name="Cadastrar"
@@ -207,18 +207,18 @@ function PerfilNavigator() {
   );
 }
 
-const DebitoStack = createStackNavigator();
-function DebitoNavigator() {
-  return (
-    <DebitoStack.Navigator>
-      <DebitoStack.Screen
-        name="Debito"
-        component={Debito}
-        options={{ headerTitle: "Debito" }}
-      />
-    </DebitoStack.Navigator>
-  );
-}
+// const DebitoStack = createStackNavigator();
+// function DebitoNavigator() {
+//   return (
+//     <DebitoStack.Navigator>
+//       <DebitoStack.Screen
+//         name="Debito"
+//         component={Debito}
+//         options={{ headerTitle: "Debito" }}
+//       />
+//     </DebitoStack.Navigator>
+//   );
+// }
 
 const CarrinhoStack = createStackNavigator();
 function CarrinhoNavigator() {
@@ -232,32 +232,32 @@ function CarrinhoNavigator() {
     </CarrinhoStack.Navigator>
   );
 }
-const CreditoStack = createStackNavigator();
-function CreditoNavigator() {
-  return (
-    <CreditoStack.Navigator>
-      <CreditoStack.Screen
-        name="Credito"
-        component={Credito}
-        options={{ headerTitle: "Credito" }}
-      />
-    </CreditoStack.Navigator>
-  );
-}
+// const CreditoStack = createStackNavigator();
+// function CreditoNavigator() {
+//   return (
+//     <CreditoStack.Navigator>
+//       <CreditoStack.Screen
+//         name="Credito"
+//         component={Credito}
+//         options={{ headerTitle: "Credito" }}
+//       />
+//     </CreditoStack.Navigator>
+//   );
+// }
 
 
-const BoletoStack = createStackNavigator();
-function BoletoNavigator() {
-  return (
-    <BoletoStack.Navigator>
-      <BoletoStack.Screen
-        name="Boleto"
-        component={Boleto}
-        options={{ headerTitle: "Boleto" }}
-      />
-    </BoletoStack.Navigator>
-  );
-}
+// const BoletoStack = createStackNavigator();
+// function BoletoNavigator() {
+//   return (
+//     <BoletoStack.Navigator>
+//       <BoletoStack.Screen
+//         name="Boleto"
+//         component={Boleto}
+//         options={{ headerTitle: "Boleto" }}
+//       />
+//     </BoletoStack.Navigator>
+//   );
+// }
 
 // const DadoscliStack = createStackNavigator();
 // function DadoscliNavigator() {

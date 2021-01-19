@@ -9,6 +9,7 @@ import BottomTabNavigator from "../navigation/BottomTabNavigator";
 import ConfirmacaoPag from "./ConfirmacaoPag";
 import Debito from "../screens/Debito";
 import Credito from "../screens/Credito";
+import Boleto from "../screens/Boleto";
 
 const db = SQLite.openDatabase('appisadb.banco');
 const Stack = createStackNavigator();
@@ -30,6 +31,7 @@ export default function Pagamento() {
     <Stack.Screen name="ConfirmacaoPag" component={ConfirmacaoPag}/>
     <Stack.Screen name="Debito" component={Debito}/>
     <Stack.Screen name="Credito" component={Credito}/>
+    <Stack.Screen name="Boleto" component={Boleto}/>
   </Stack.Navigator>
  );
   
@@ -91,12 +93,12 @@ export default function Pagamento() {
   return (
     <View style={tela.area}>
       <ScrollView>
-      <Text style={tela.titulo}>Formas de Pagamento</Text>
+      <Text style={tela.titulo}>Pagamento em Boleto</Text>
 
       <View style={tela.inputView}>
         
           <TouchableOpacity onPress={()=>{
-            navigation.navigate("TabTwoScreen")
+            navigation.navigate("Debito")
             }} style={tela.link}>
               <Image
             source={require("../img/card3.png")}
@@ -106,7 +108,7 @@ export default function Pagamento() {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={()=>{
-            navigation.navigate("TabTwoScreen")
+            navigation.navigate("Credito")
             }} style={tela.link}>
               <Image
             source={require("../img/card.png")}
@@ -116,7 +118,7 @@ export default function Pagamento() {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={()=>{
-                navigation.navigate("TabTwoScreen")
+                navigation.navigate("Boleto")
         }} style={tela.link}>
           <Image
             source={require("../img/boleto4.png")}
@@ -237,32 +239,22 @@ export default function Pagamento() {
           </View>
 
         </View>
-
-
         </View>
 
 
-      {/* <TextInput placeholder="Descrição do pagamento" value={descricao} onChangeText={(value)=>setDescricao(value)}/> */}
+     
       <View style={tela.valor}>
       <Text style={tela.valorTxt}>Valor Total:                        R$ {valor}</Text>
       <TextInput style={tela.valorTxt} keyboardType="decimal-pad" onChangeText={(value)=>setValor(value)}/>
       </View>
-    
-
-      {/* <View style={tela.valor}>
-      <Text style={tela.valorTxt}>Parcela:                        R$ {valor}</Text>
-
-      <TextInput style={tela.valorTxt} keyboardType="decimal-pad" onChangeText={(value)=>setVParcelas(value)}/>
-      </View> */}
 
       <Picker selectedValue={parcela}mode="dropdown"onValueChange={(parcela) => {
           setParcela(parcela);
           setVParcelas((parseFloat(valor) / parcela).toString());
         }}
       >
-
-        <Picker.Item label="À vista de R$" value="1"/>
-        <Picker.Item label="2x sem juros" value="2"/>
+        <Text style={tela.valorTxt1}>Valor total pago no boleto:            R$ {valor}</Text>
+        <Picker.Item label="Valor À vista no Boleto de R$" value="1"/>
        
       </Picker> 
       <Text style={tela.valorTxt1}>Valor total pago no boleto:            R$ {valor}</Text>
@@ -273,8 +265,8 @@ export default function Pagamento() {
         //navigation.navigate("ConfirmacaoPag")
         // passagens de dados do formulários para os variáveis e depois cadastro do pagamento
         idc = idcliente;
-        tp = tipo;
-        ds = descricao;
+        tp = "Boleto";
+        ds = "Boleto gerado";
         vl = valor;
         qp = parcela;
         vp = vParcelas;
@@ -313,52 +305,52 @@ export default function Pagamento() {
  
 }
 
-function efetuarPagamento() {
-  Alert.alert(
-    "IDC: " +
-      idc +
-      "\nTipo: " +
-      tp +
-      "\nDescricao: " +
-      ds +
-      "\nValor: " +
-      vl +
-      "\nQuantidade: " +
-      qp +
-      "\nValor parcela:" +
-      vp 
-  );
+// function efetuarPagamento() {
+//   Alert.alert(
+//     "IDC: " +
+//       idc +
+//       "\nTipo: " +
+//       tp +
+//       "\nDescricao: " +
+//       ds +
+//       "\nValor: " +
+//       vl +
+//       "\nQuantidade: " +
+//       qp +
+//       "\nValor parcela:" +
+//       vp 
+//   );
 
 
-// function efetuarPagamento(){
-//   fetch("http://192.168.0.2:8080/projetoisaclube/service/pagamento/cadastro.php", {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       idcliente: idc,
-//       tipo: "Boleto",
-//       descricao: "Pagamento a Vista no boleto",
-//       valor: vl,
-//       parcelas: "1 Parcela a Vista",
-//       valorparcela: vp,
+function efetuarPagamento(){
+  fetch("http://192.168.0.2:8080/projetoisaclube/service/pagamento/cadastro.php", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      idcliente: idc,
+      tipo: "Boleto",
+      descricao: "Pagamento a Vista no boleto",
+      valor: vl,
+      parcelas: "1 Parcela a Vista",
+      valorparcela: vp,
 
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((resposta) => {
-//       console.log(resposta);
-//       alert("Seu pagamento foi efetuado");
-//     })
-//     .catch((error) => console.error(error));
-//     limparCarrinho();
-// }
-// function limparCarrinho(){
-//    db.transaction((tx)=>{
-//     tx.executeSql("delete from itens");
-//   });
+    }),
+  })
+    .then((response) => response.json())
+    .then((resposta) => {
+      console.log(resposta);
+      alert("Seu pagamento foi efetuado");
+    })
+    .catch((error) => console.error(error));
+    limparCarrinho();
+}
+function limparCarrinho(){
+   db.transaction((tx)=>{
+    tx.executeSql("delete from itens");
+  });
 
 }
 
@@ -525,6 +517,8 @@ const tela = StyleSheet.create({
  
   //=================================================Botao da Opcoes de pagamento =============================================//
   inputView:{
+    padding:5,
+    backgroundColor: "#eeeeee",
     marginTop:30,
     flexDirection:"row",
     justifyContent:'space-between',
@@ -547,10 +541,10 @@ const tela = StyleSheet.create({
     borderRadius: 6,
     marginLeft:10,
     marginRight:10,
-    borderWidth:2,
+    borderWidth:1,
     borderColor:"red",
     alignItems:'center',
-    padding: 5,
+    padding: 10,
     fontWeight: "bold",
   },
 
@@ -592,53 +586,5 @@ const tela = StyleSheet.create({
   },
   // =====================================================Botao de pagamento ===================================================//
 
-   // InputTxt:{
-  //   marginTop:-21,
-  //   marginBottom:10,
-  //   marginLeft: "auto",
-  //   marginRight: "auto",
-  // },
-
-    // ViewPaga:{
-
-  // //horizontal:true,
-  // marginLeft: "auto",
-  // marginRight: "auto",
-  // width: "100%",
-  // marginTop:10,
-  // flexDirection:"row",
-  // alignItems:'center',
-  // justifyContent:'space-between',
-  // backgroundColor: "#eeeeee",
-  // },
-  // Input1: {
-  //   height: 50,
-  //   marginTop: -30,
-  //   marginLeft: 15,
-  //   marginBottom: 30,
-  //   backgroundColor: "#8bc34a",
-  // },
- 
-  // boleto: {
-  //   width: 81,
-  //   height: 50,
-  //   marginTop: 15,
-  //   marginLeft: 15,
-  //   marginRight: 15,
-  //   marginBottom: 30,
-  //   //backgroundColor: "#8bc34a",
-  // },
-  // endcaixa: {
-  //   backgroundColor: "white",
-  //   color: "#f50057",
-  //   padding: 18,
-  //   width: "85%",
-  //   margin: 6,
-  //   marginLeft: "auto",
-  //   marginRight: "auto",
-  //   shadowColor: "gray",
-  //   shadowOpacity: 1,
-  //   borderRadius: 5,
-  //   borderBottomColor: "silver",
-  // },
+  
 });

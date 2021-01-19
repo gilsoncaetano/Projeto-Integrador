@@ -56,6 +56,7 @@ function TelaLogin({navigation}){
        <Image source={require("../img/saw-logo.png")} style={estilo.logo} />
        <TextInput
           placeholder="E-mail"
+          placeholderTextColor="#999"
           keyboardType="email-address"
           style={estilo.acesso}
           onChangeText={(value) => setEmail(value)}
@@ -64,6 +65,7 @@ function TelaLogin({navigation}){
         <TextInput
           secureTextEntry
           placeholder="Senha"
+          placeholderTextColor="#999"
           style={estilo.acesso}
           onChangeText={(value) => setSenha(value)}
           value={senha}
